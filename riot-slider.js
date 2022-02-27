@@ -42,32 +42,140 @@ class RiotSlider {
       return false
     }
 
-    let html = this.elems.main.html()
-    html = $('<div></div>')
-      .addClass('slidesInner')
-      .html(html)
-    html = $('<div></div>')
-      .addClass('slidesOuter')
-      .html(html)
-    this.elems.main.html(html)
+    this.elems.main.find('ul').addClass('slide-list')
+    let slides = this.elems.main.find('li');
+    slides.addClass('slide')
 
-    this.elems.slidesInner = this.elems.main.find('.slidesInner')
-    this.elems.slides = this.elems.slidesInner.find('.slide')
+    this.slideCount = slides.length
 
-    this.slideCount = this.elems.slides.length
+    //console.log(this.slideCount,'z');
+    //console.log(this.elems.main);
+    //console.log(this.elems.slidesInner);
+    //console.log(this.elems.slides);
+    this.loadHtml()
+
+    
+
+    this.elems.slidesInner = this.elems.main.find('.slides-inner');
+
+    
+
+    let slideWidth = 100 / this.slideCount
+    this.elems.slides.css('width', slideWidth + '%').css('color','#FF0')
+    console.log('----------');
+    console.log(slideWidth);
+    console.log(this.elems.slides.length);
 
     this.setWidth()
+
+    return
 
     this.bindAll()
 
     
-    let slideWidth = 100 / this.slideCount + '%'
-    this.elems.slides.css('width', slideWidth)
 
     this.elems.main.addClass('isLoaded')
 
     this.goToSlide()
     this.startInterval()
+    return true
+  }
+
+  loadHtml () {
+    let html = this.elems.main.html()
+    html = $('<div></div>')
+      .addClass('slides-inner')
+      .html(html)
+    html = $('<div></div>')
+      .addClass('slides-outer')
+      .html(html)
+    
+    
+
+    let buttonsHtml = $('<div></div>').addClass('buttons')
+
+    let buttonHtml, buttonGroupHtml, buttonInnerHtml;
+
+    for (let x = 1; x <= this.slideCount; x++) {
+      buttonHtml = $('<a></a>')
+        .attr('href', '#')
+        .addClass('slide-link slide-link-' + x)
+        .html(x)
+      buttonsHtml.append(buttonHtml)
+    }
+
+    buttonGroupHtml = $('<div></div>').addClass('button-group');
+    
+    buttonInnerHtml = $('<i></i>').addClass('material-icons').html('navigate_before');
+    buttonHtml = $('<a></a>')
+    .attr('href', '#')
+      .addClass('slide-link slide-link-prev')
+      .html(buttonInnerHtml)
+
+    buttonGroupHtml.append(buttonHtml)
+
+    buttonInnerHtml = $('<i></i>').addClass('material-icons').html('navigate_next');
+    buttonHtml = $('<a></a>')
+    .attr('href', '#')
+      .addClass('slide-link slide-link-next')
+      .html(buttonInnerHtml)
+
+    buttonGroupHtml.append(buttonHtml)
+
+    buttonsHtml.append(buttonGroupHtml)
+
+/////////////////////
+
+    buttonGroupHtml = $('<div></div>').addClass('button-group');
+    
+    buttonInnerHtml = $('<i></i>').addClass('material-icons').html('play_arrow');
+    buttonHtml = $('<a></a>')
+    .attr('href', '#')
+      .addClass('slide-link slide-link-play')
+      .html(buttonInnerHtml)
+
+    buttonGroupHtml.append(buttonHtml)
+
+    buttonInnerHtml = $('<i></i>').addClass('material-icons').html('pause');
+    buttonHtml = $('<a></a>')
+    .attr('href', '#')
+      .addClass('slide-link slide-link-stop')
+      .html(buttonInnerHtml)
+
+    buttonGroupHtml.append(buttonHtml)
+
+    buttonsHtml.append(buttonGroupHtml)
+
+
+    this.elems.main.html(html)
+    this.elems.main.append(buttonsHtml)
+
+    this.elems.slides = this.elems.main.find('li')
+    
+    //this.elems.main.append(buttonsHtml)
+    console.log('c')
+    /*<div class="buttonCon" style="display:none;">
+<?
+	$x=0;
+	foreach ($imgAr as $img)
+	{
+		$x++;
+		?><a href="javascript:void(0);" class="slideLink slideLink<? echo $x; ?>"><? echo $x; ?></a> <?
+	}
+?>
+<div class="opsCon">
+<a href="javascript:void(0);" class="slideLinkPrev"><i class="material-icons">
+navigate_before
+</i></a>
+<a href="javascript:void(0);" class="slideLinkNext"><i class="material-icons">
+navigate_next
+</i></a>
+
+<a href="javascript:void(0);" class="slideLinkPlay"><i class="material-icons">play_arrow</i></a>
+<a href="javascript:void(0);" class="slideLinkStop"><i class="material-icons">pause</i></a>
+</div>*/
+
+    //this.elems.main.html(html)
   }
 
   setWidth () {
@@ -121,7 +229,7 @@ class RiotSlider {
   }
 
   startInterval () {
-    console.log(this);
+    console.log(this)
     //console.log('startInterval');
     this.stopInterval()
     //this.elem.play.addClass('active');

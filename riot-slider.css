@@ -1,26 +1,35 @@
-.riotSlider {
+.riot-slider {
   background-color: #eee;
 }
 
-.riotSlider .slide {
+.riot-slider li {
   display: none;
   text-align: center;
 }
-
-.riotSlider,
-.riotSlider .slideList,
-.riotSlider .slide:first-child {
-  display: block;
+.riot-slider li:first-child {
+	display:list-item;
 }
 
-.riotSlider.isLoaded {
+.riot-slider ul {
+	list-style: none;
+}
+
+.riot-slider,
+.riot-slider ul,
+.riot-slider li:first-child {
+  margin:0;
+  padding:0;
+  width:100%;
+}
+
+.riot-slider {
   width: 100%;
-  background-color: #f00;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-.riotSlider.isLoaded .slidesOuter {
+
+.riot-slider .slides-outer {
   width: 100%;
   background-color: #0f0;
   box-sizing: border-box;
@@ -28,7 +37,7 @@
   padding: 0;
   overflow: hidden;
 }
-.riotSlider.isLoaded .slidesInner {
+.riot-slider .slides-inner {
   background-color: #0f0;
   box-sizing: border-box;
   margin: 0;
@@ -36,12 +45,13 @@
   display: table;
   transition: 1s;
 }
-.riotSlider.isLoaded .slideList {
+
+.riot-slider ul.slide-list {
   background-color: #00f;
   display: table-row;
 }
 
-.riotSlider.isLoaded .slide {
+.riot-slider li.slide {
   display: table-cell;
   border: 15px solid #f00;
   margin: 0;
@@ -50,8 +60,71 @@
   text-align: center;
 }
 
-.riotSlider.isLoaded .slide > img {
+.riot-slider li.slide > img {
   display: block;
   margin: 0 auto;
   max-width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* buttons */
+
+.riot-slider .buttons { 
+	padding:10px 0; 
+	text-align:center; 
+}
+
+.riot-slider .buttons .button-group {
+	white-space:nowrap;
+	display:inline-block;
+	margin-left:10px;
+}
+
+.riot-slider .buttons a  {
+	color: #fff;
+	background-color: #677;
+	border-color: #677;
+	display: inline-block;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: 6px 10px;
+	font-size: 16px;
+	border-radius: 3px;
+	text-decoration: none;
+	line-height:normal;
+	min-height:20px;
+	margin: 0 8px 12px 0;
+	font-family: Verdana,Segoe,sans-serif;
+}
+
+.riot-slider .buttons a:hover,
+.riot-slider .buttons a:active {
+    color: #fff;
+    background-color: #899;
+    border-color: #899;
+	text-decoration: none;
+}
+
+.riot-slider .buttons a .material-icons {
+    font-size: 14px;
+	line-height:normal;
+}
+
+.riot-slider .buttons a.active,
+.riot-slider .buttons a.active:hover,
+.riot-slider .buttons a.active:active {
+    background-color: #8f78ad;
+    border-color: #8f78ad;
 }
