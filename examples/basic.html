@@ -16,25 +16,21 @@
 </style>
 
 	<div id="slider1" class="riotSlider">
-		<div class="slidesOuter">
-			<div class="slidesInner">
-				<ul class="slideList">
-					<li class="slide"><img src="https://riotontheset.com/images/screens/episode-7-all-characters.jpg" alt="Alt Text" /></li>
-					<li class="slide"><img src="http://www.mastergorilla.com/images/yit_phil_elliot.jpg" /></li>
-					
-					<li class="slide"><img src="https://riotontheset.com/images/screens/episode-7-all-characters.jpg" alt="Alt Text" /></li>
-					<li class="slide"><div><b>text here</b><p>More Text</p></div></li>
-				</ul>
-			</div>
-		</div>
+		<ul class="slideList">
+			<li class="slide"><img src="https://riotontheset.com/images/screens/episode-7-all-characters.jpg" alt="Alt Text" /></li>
+			<li class="slide"><img src="http://www.mastergorilla.com/images/yit_phil_elliot.jpg" /></li>
+			
+			<li class="slide"><img src="https://riotontheset.com/images/screens/episode-8-britney-blake-alex-tim.jpg" alt="Alt Text" /></li>
+			<li class="slide"><div><b>text here</b><p>More Text</p></div></li>
+		</ul>
 	</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
     <script src="./../riot-slider.js"></script>
 	<script>
 		$( document ).ready(function() {
-			let slider1 = new RiotSlider('slider1');
-			slider1.load();
+			let slider1 = new RiotSlider();
+			slider1.load('slider1');
 		});</script>
 </body>
 </html>
