@@ -122,9 +122,9 @@
 	line-height:normal;
 }
 
-.riot-slider .buttons a.active,
-.riot-slider .buttons a.active:hover,
-.riot-slider .buttons a.active:active {
-    background-color: #8f78ad;
-    border-color: #8f78ad;
+.riot-slider .buttons a.is-active,
+.riot-slider .buttons a.is-active:hover,
+.riot-slider .buttons a.is-active:active {
+    background-color: #009;
+    border-color: #009;
 }
