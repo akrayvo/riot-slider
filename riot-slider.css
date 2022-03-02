@@ -1,44 +1,57 @@
+/*
+div.riot-slider
+  div.slides-outer
+    div.slides-inner
+      ul.slide-list
+        li.slide
+  div.buttons
+    div.button-group
+      a
+*/
+
+/*************************************************************** 
+ * START dislay the first slide, but hide the rest before the slider is loaded 
+ ***************************************************************/
 .riot-slider {
   background-color: #eee;
+}
+
+.riot-slider,
+.riot-slider ul,
+.riot-slider li:first-child {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.riot-slider ul {
+  list-style: none;
 }
 
 .riot-slider li {
   display: none;
   text-align: center;
 }
+
 .riot-slider li:first-child {
-	display:list-item;
+  display: list-item;
 }
+/*************************************************************** 
+ * END dislay the first slide, but hide the rest before the slider is loaded 
+ ***************************************************************/
 
-.riot-slider ul {
-	list-style: none;
-}
-
-.riot-slider,
-.riot-slider ul,
-.riot-slider li:first-child {
-  margin:0;
-  padding:0;
-  width:100%;
-}
-
-.riot-slider {
-  width: 100%;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
+/* outer slides container */
 .riot-slider .slides-outer {
   width: 100%;
-  background-color: #0f0;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   overflow: hidden;
 }
+
+/* inner slides container */
 .riot-slider .slides-inner {
-  background-color: #0f0;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -46,85 +59,78 @@
   transition: 1s;
 }
 
+/* slide list */
 .riot-slider ul.slide-list {
-  background-color: #00f;
   display: table-row;
 }
 
+/* slide */
 .riot-slider li.slide {
   display: table-cell;
-  border: 15px solid #f00;
   margin: 0;
   padding: 0;
   vertical-align: middle;
   text-align: center;
 }
 
+/* image in slide */
 .riot-slider li.slide > img {
   display: block;
   margin: 0 auto;
   max-width: 100%;
 }
 
+/*************************************************************** 
+ * START buttons
+ ***************************************************************/
 
-
-
-
-
-
-
-
-
-
-/* buttons */
-
-.riot-slider .buttons { 
-	padding:10px 0; 
-	text-align:center; 
+.riot-slider .buttons {
+  padding: 10px 0;
+  text-align: center;
 }
 
 .riot-slider .buttons .button-group {
-	white-space:nowrap;
-	display:inline-block;
-	margin-left:10px;
+  white-space: nowrap;
+  display: inline-block;
+  margin-left: 10px;
 }
 
-.riot-slider .buttons a  {
-	color: #fff;
-	background-color: #677;
-	border-color: #677;
-	display: inline-block;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	border: 1px solid transparent;
-	padding: 6px 10px;
-	font-size: 16px;
-	border-radius: 3px;
-	text-decoration: none;
-	line-height:normal;
-	min-height:20px;
-	margin: 0 8px 12px 0;
-	font-family: Verdana,Segoe,sans-serif;
+.riot-slider .buttons button {
+  color: #fff;
+  display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 16px;
+  border-radius: 3px;
+  text-decoration: none;
+  line-height: normal;
+  min-height: 20px;
+  margin: 0 8px 12px 0;
+  padding: 6px 10px;
+  font-family: Verdana, Segoe, sans-serif;
+  background-color: #677;
+  border-color: #677;
+  border: 1px solid transparent;
+  cursor:pointer;
 }
 
-.riot-slider .buttons a:hover,
-.riot-slider .buttons a:active {
-    color: #fff;
-    background-color: #899;
-    border-color: #899;
-	text-decoration: none;
+.riot-slider .buttons button:hover {
+  background-color: #899;
+  border-color: #899;
 }
 
-.riot-slider .buttons a .material-icons {
-    font-size: 14px;
-	line-height:normal;
+.riot-slider .buttons button .material-icons {
+  font-size: 14px;
+  line-height: normal;
 }
 
-.riot-slider .buttons a.is-active,
-.riot-slider .buttons a.is-active:hover,
-.riot-slider .buttons a.is-active:active {
-    background-color: #009;
-    border-color: #009;
+.riot-slider .buttons button.is-active {
+  background-color: #009;
+  border-color: #009;
 }
+
+/*************************************************************** 
+ * END buttons
+ ***************************************************************/

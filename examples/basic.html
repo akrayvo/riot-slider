@@ -18,7 +18,7 @@
 	<div id="slider1" class="riot-slider">
 		<ul>
 			<li><img src="https://riotontheset.com/images/screens/episode-7-all-characters.jpg" alt="Alt Text" /></li>
-			<li><img src="http://www.mastergorilla.com/images/yit_phil_elliot.jpg" /></li>
+			<li><img src="https://www.mastergorilla.com/images/yit_phil_elliot.jpg" /></li>
 			
 			<li><img src="https://riotontheset.com/images/screens/episode-8-britney-blake-alex-tim.jpg" alt="Alt Text" /></li>
 			<li><div><b>text here</b><p>More Text</p></div></li>
@@ -30,6 +30,9 @@
 	<script>
 		$( document ).ready(function() {
 			let slider1 = new RiotSlider();
+			slider1.setSlideHoldSeconds(1.5);
+			slider1.setUseMaterialIcons(true);
+			slider1.setIsAutoPlay(true);
 			slider1.load('slider1');
 		});</script>
 </body>

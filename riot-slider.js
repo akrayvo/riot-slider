@@ -3,7 +3,7 @@ class RiotSlider {
    * initialize all class variables
    *     if the element ID is passed, the slider will be loaded.
    * if the element ID is NOT passed, the slider will not be loaded until the load()
-   *     function is called. this will give a chance to set parameters
+   *     function is called. this will give a chance to set parameters.
    */
   constructor (elementId) {
     this.elems = {
@@ -23,13 +23,12 @@ class RiotSlider {
     this.intervalIsSet = false
     this.isLoaded = false
     this.options = {
-      useMaterialIcons: true,
-      showButtons: true,
-      showSlideNumberButtons: true,
-      isAutoplay: true,
-      slideMoveTimeSec: null,
-      slideHoldTimeMs: 5000,
-      doConsoleLogInfo: true
+      useMaterialIcons: false,
+      doShowButtons: true,
+      doShowNumberButtons: true,
+      isAutoPlay: true,
+      doConsoleLogInfo: true,
+      slideHoldSeconds: 5
     }
 
     if (typeof elementId !== 'undefined') {
@@ -37,11 +36,87 @@ class RiotSlider {
     }
   }
 
-  // write information to the console if doConsoleLogInfo is true
+  /*****************************************************************************
+   * star SET OPTIONS
+   ****************************************************************************/
+
+  /*
+   * set useMaterialIcons
+   * if set, material icons will display for play, stop, previous, and next buttons
+   * <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   */
+  setUseMaterialIcons (value) {
+    this.options.useMaterialIcons = this.returnBoolean(value)
+  }
+
+  /*
+   * set doShowButtons
+   * if set, slider related buttons will display. numbers, play/stop, prev/next
+   */
+  setDoShowButtons (value) {
+    this.options.doShowButtons = this.returnBoolean(value)
+  }
+
+  /*
+   * set doShowNumberButtons
+   * if set, slide number buttons will display
+   */
+  setDoShowNumberButtons (value) {
+    this.options.doShowNumberButtons = this.returnBoolean(value)
+  }
+
+  /*
+   * set isAutoPlay
+   * if set, slider will automatically start playing when loaded
+   */
+  setIsAutoPlay (value) {
+    this.options.isAutoPlay = this.returnBoolean(value)
+  }
+
+  /*
+   * set doConsoleLog
+   * if set, information will be added to the console log
+   * used in the consoleLogInfo(info) function
+   */
+  setDoConsoleLog (value) {
+    this.options.doConsoleLog = this.returnBoolean(value)
+  }
+
+  /*
+   * set setSlideHoldSeconds
+   * the length of time each slide is displayed before moving to the next when playing
+   */
+  setSlideHoldSeconds (value) {
+    if (isNaN(value)) {
+      return false
+    }
+    if (value < 1 || value > 600) {
+      return false
+    }
+    this.options.slideHoldSeconds = value
+  }
+
+  /*****************************************************************************
+   * end SET OPTIONS
+   ****************************************************************************/
+
+  /*
+   * write information to the console if doConsoleLogInfo is true
+   */
   consoleLogInfo (info) {
-    if (this.options.doConsoleLogInfo) {
+    if (this.options.doConsoleLog) {
       console.log(info)
     }
+  }
+
+  /*
+   * convert a variable to either true or false
+   */
+  returnBoolean (value) {
+    if (value) {
+      return true
+    }
+    return false
   }
 
   /*
@@ -63,16 +138,26 @@ class RiotSlider {
       return false
     }
 
+    // check that at least 1 slide exists
+    if (this.elems.main.find('ul li').length < 1) {
+      this.consoleLogInfo(
+        'Riot Slider not loaded. No slides found in ' + elementId
+      )
+      return false
+    }
+
     this.loadHtml()
 
-    this.setWidth()
+    this.updateWidth()
 
     this.bindAll()
 
-    this.goToSlide()
-
-    this.elems.play.addClass('is-active')
-    this.startInterval()
+    if (this.options.isAutoPlay) {
+      // go to the curret slide and start player
+      this.goToSlide()
+      this.elems.play.addClass('is-active')
+      this.startInterval()
+    }
 
     this.isLoaded = true
 
@@ -84,12 +169,16 @@ class RiotSlider {
   }
 
   /*
-   * add new HTML elements, add classes to existing elements, and use selectors to save to the elems class
+   * add new HTML elements, add classes to existing elements, and use selectors to save elements
    */
   loadHtml () {
     // add 2 containers around the list of slides.
     // slide-outer stays in place, slide-inner changes the left-margin value to "slide"
-    let html = this.elems.main.html()
+    let html = this.elems.main
+      .find('ul')
+      .first()
+      .html()
+
     html = $('<div></div>')
       .addClass('slides-inner')
       .html(html)
@@ -119,8 +208,8 @@ class RiotSlider {
 
     // the slide number buttons
     for (let x = 1; x <= this.slideCount; x++) {
-      buttonHtml = $('<a></a>')
-        .attr('href', '#')
+      buttonHtml = $('<button></button>')
+        .attr('type', 'button')
         .addClass('slide-link slide-link-' + x)
         .html(x)
       buttonsHtml.append(buttonHtml)
@@ -128,19 +217,27 @@ class RiotSlider {
 
     // the previous and next buttons
     buttonGroupHtml = $('<div></div>').addClass('button-group')
-    buttonInnerHtml = $('<i></i>')
-      .addClass('material-icons')
-      .html('navigate_before')
-    buttonHtml = $('<a></a>')
-      .attr('href', '#')
+    if (this.options.useMaterialIcons) {
+      buttonInnerHtml = $('<i></i>')
+        .addClass('material-icons')
+        .html('navigate_before')
+    } else {
+      buttonInnerHtml = '&laquo;'
+    }
+    buttonHtml = $('<button></button>')
+      .attr('type', 'button')
       .addClass('slide-link-prev')
       .html(buttonInnerHtml)
     buttonGroupHtml.append(buttonHtml)
-    buttonInnerHtml = $('<i></i>')
-      .addClass('material-icons')
-      .html('navigate_next')
-    buttonHtml = $('<a></a>')
-      .attr('href', '#')
+    if (this.options.useMaterialIcons) {
+      buttonInnerHtml = $('<i></i>')
+        .addClass('material-icons')
+        .html('navigate_next')
+    } else {
+      buttonInnerHtml = '&raquo;'
+    }
+    buttonHtml = $('<button></button>')
+      .attr('type', 'button')
       .addClass('slide-link-next')
       .html(buttonInnerHtml)
     buttonGroupHtml.append(buttonHtml)
@@ -148,19 +245,27 @@ class RiotSlider {
 
     // the play and stop buttons
     buttonGroupHtml = $('<div></div>').addClass('button-group')
-    buttonInnerHtml = $('<i></i>')
-      .addClass('material-icons')
-      .html('play_arrow')
-    buttonHtml = $('<a></a>')
-      .attr('href', '#')
+    if (this.options.useMaterialIcons) {
+      buttonInnerHtml = $('<i></i>')
+        .addClass('material-icons')
+        .html('play_arrow')
+    } else {
+      buttonInnerHtml = 'play'
+    }
+    buttonHtml = $('<button></button>')
+      .attr('type', 'button')
       .addClass('slide-link-play')
       .html(buttonInnerHtml)
     buttonGroupHtml.append(buttonHtml)
-    buttonInnerHtml = $('<i></i>')
-      .addClass('material-icons')
-      .html('pause')
-    buttonHtml = $('<a></a>')
-      .attr('href', '#')
+    if (this.options.useMaterialIcons) {
+      buttonInnerHtml = $('<i></i>')
+        .addClass('material-icons')
+        .html('pause')
+    } else {
+      buttonInnerHtml = 'stop'
+    }
+    buttonHtml = $('<button></button>')
+      .attr('type', 'button')
       .addClass('slide-link-stop')
       .html(buttonInnerHtml)
     buttonGroupHtml.append(buttonHtml)
@@ -180,63 +285,11 @@ class RiotSlider {
   /*
    * changes the width of the slide when the browser/window is resized
    */
-  setWidth () {
+  updateWidth () {
     this.sliderWidth = this.elems.main.width()
     let sliderInnerWidth = this.sliderWidth * this.slideCount
     this.elems.slidesInner.css('width', sliderInnerWidth + 'px')
     this.consoleLogInfo('Riot Slider width set to ' + sliderInnerWidth)
-  }
-
-  /*
-   * changes the width of the slide when the browser/window is resized
-   */
-  slideNumberClicked (buttonClicked) {
-    this.stopInterval()
-    this.currentSlideNumber = parseInt( $(buttonClicked).html() )
-    this.goToSlide()
-  }
-
-  /*
-   * the play button has been clicked. load the next slide and set the
-   * following slide to load after a pause
-   */
-  playClicked () {
-    this.elems.play.addClass('is-active')
-    this.incrementSlideNumber()
-    this.goToSlide()
-    this.startInterval()
-  }
-
-  /*
-   * the stop button has been clicked. if the next image is set to load
-   * after a pause, stop that action
-   */
-  stopClicked () {
-    this.elems.stop.addClass('is-active')
-    this.removeActiveClassIn1Sec(this.elems.stop)
-    this.stopInterval()
-  }
-
-  /*
-   * the previous button was clicked. got to the next slide
-   */
-  prevClicked () {
-    this.elems.prev.addClass('is-active')
-    this.removeActiveClassIn1Sec(this.elems.prev)
-    this.stopInterval()
-    this.incrementSlideNumber(-1)
-    this.goToSlide()
-  }
-
-  /*
-   * the previous button was clicked. got to the previous slide
-   */
-  nextClicked () {
-    this.elems.next.addClass('is-active')
-    this.removeActiveClassIn1Sec(this.elems.next)
-    this.stopInterval()
-    this.incrementSlideNumber()
-    this.goToSlide()
   }
 
   /*
@@ -259,7 +312,7 @@ class RiotSlider {
   bindAll () {
     // browswer window resize
     $(window).on('resize', { rsThis: this }, function (event) {
-      event.data.rsThis.setWidth()
+      event.data.rsThis.updateWidth()
     })
 
     // slide number buttons
@@ -358,18 +411,10 @@ class RiotSlider {
 
   /*
    * load the next slide after a pause
-   *
    */
   startInterval () {
     // stop the current interval if it is on/active
     this.stopInterval()
-
-    // set the pause in milliseconds
-    let milliseconds = this.options.slideHoldTimeMs
-    // if pause is invalid, set to 4 seconds
-    if (isNaN(milliseconds) || milliseconds < 1000 || milliseconds > 600000) {
-      milliseconds = 4000
-    }
 
     // go to next slide after pause
     this.intervalIsSet = true
@@ -378,8 +423,63 @@ class RiotSlider {
         rsThis.incrementSlideNumber()
         rsThis.goToSlide()
       },
-      milliseconds,
+      Math.round(this.options.slideHoldSeconds * 1000),
       this
     )
+  }
+
+  /*****************************************************************************
+   * BUTTON CLICK ACTIONS
+   ****************************************************************************/
+  /*
+   * changes the width of the slide when the browser/window is resized
+   */
+  slideNumberClicked (buttonClicked) {
+    this.stopInterval()
+    this.currentSlideNumber = parseInt($(buttonClicked).html())
+    this.goToSlide()
+  }
+
+  /*
+   * the play button has been clicked. load the next slide and set the
+   * following slide to load after a pause
+   */
+  playClicked () {
+    this.elems.play.addClass('is-active')
+    this.incrementSlideNumber()
+    this.goToSlide()
+    this.startInterval()
+  }
+
+  /*
+   * the stop button has been clicked. if the next image is set to load
+   * after a pause, stop that action
+   */
+  stopClicked () {
+    this.elems.stop.addClass('is-active')
+    this.removeActiveClassIn1Sec(this.elems.stop)
+    this.stopInterval()
+  }
+
+  /*
+   * the previous button was clicked. got to the next slide
+   */
+  prevClicked () {
+    this.elems.prev.addClass('is-active')
+    this.removeActiveClassIn1Sec(this.elems.prev)
+    this.stopInterval()
+    this.incrementSlideNumber(-1)
+    this.goToSlide()
+  }
+
+  /*
+   * the previous button was clicked. got to the previous slide
+   */
+  nextClicked () {
+    this.elems.next.addClass('is-active')
+    this.removeActiveClassIn1Sec(this.elems.next)
+    this.stopInterval()
+    this.incrementSlideNumber()
+    this.goToSlide()
   }
 }
