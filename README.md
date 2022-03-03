@@ -7,7 +7,6 @@ A simple, easy to impletment, jQuery image slider
 ## Requirements
 
 - jQuery >= 3.1
-- Material Icons (optional)
 
 ## Installation
 
@@ -15,45 +14,27 @@ Add **riot-slider.js** and **riot-slider.css** files to your project.
 
 ## Basic Example
 
-
 ```
 <link rel="stylesheet" href="./riot-slider.css">
 ```
+
 ```
 <div id="slider1" class="riot-slider">
     <ul>
-        <li><img src="https://yoursite.com/images/slide1.jpg" /></li>
-        <li><img src="https://www.mastergorilla.com/images/yit_phil_elliot.jpg" /></li>
-        
-        <li><img src="https://riotontheset.com/images/screens/episode-8-britney-blake-alex-tim.jpg" alt="Alt Text" /></li>
-        <li><div><b>text here</b><p>More Text</p></div></li>
+        <li data-caption="Blue Jay"><img src="./blue_jay_bird_nature.jpg" /></li>
+        <li><img src="./squirrel_tree_mammal_paw.jpg" /></li>
+        <li><img src="./port_au_prince_haiti.jpg" /></li>
+        <li><img src="./pennsylvania_landscape_scenic_97427.jpg" /></li>
+        <li><p><b>Main Text Here</b></p><p>More text here!</p></li>
     </ul>
 </div>
 ```
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
-<script src="./riot-slider.js"></script>
-<script>
-$( document ).ready(function() {
-    let slider1 = new RiotSlider();
-    slider1.load('slider1');
-});</script>
-```
-
-Generated HTML
 
 ```
-<form action="/yourPage.php" method="post">
-    <div>Name</div>
-    <input type="text" name="name" value=""><br><br>
-
-    <div>Favorite Color</div>
-    <select name="colors"><option value="">- select a color -</option><option value="blue">Blue</option><option value="green">Green</option><option value="lightBlue">Light Blue</option><option value="red">Red</option></select><br><br>
-
-    <div>Comments</div>
-    <textarea name="comments"></textarea><br><br>
-
-    <input type="submit" name="submit" value="Save Info">
-</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="./../riot-slider.js"></script>
+<script> let slider1 = new RiotSlider("slider1"); });
+</script>
 ```
 
 ## Settings

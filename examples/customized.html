@@ -17,7 +17,7 @@
       <div
         id="slider1"
         class="riot-slider"
-        style="max-width: 800px;border:5px solid #66D;border-radius:20px;"
+        style="max-width: 800px; border: 5px solid #66d; border-radius: 20px"
       >
         <ul>
           <!-- a caption will automatically be added if the "data-caption" attribute
@@ -40,54 +40,52 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
       <script src="./../riot-slider.js"></script>
       <script>
-        $(document).ready(function () {
-          // note that if the id of the html element is passed when the
-          //    class variable is created, the slider will load without
-          //    giving a chance for customization. so it is being loaded
-          //    without a parameter so that we have chance to add settings
-          let slider1 = new RiotSlider();
+        // note that if the id of the html element is passed when the
+        //    class variable is created, the slider will load without
+        //    giving a chance for customization. so it is being loaded
+        //    without a parameter so that we have chance to add settings
+        let slider1 = new RiotSlider();
 
-          /*
-           * use material icons to make the play, stop, previous, and
-           *   next buttons look better. will automatically add material
-           *   icons from googleapis.com if they're not available
-           */
-          slider1.setUseMaterialIcons(true);
+        /*
+         * use material icons to make the play, stop, previous, and
+         *   next buttons look better. will automatically add material
+         *   icons from googleapis.com if they're not available
+         */
+        slider1.setUseMaterialIcons(true);
 
-          /*
-           * the slider's default is to start playing when it loads. if
-           * isAutoPlay is set to false, the player won't start unless
-           * the "play" button is clicked
-           */
-          slider1.setIsAutoPlay(false);
+        /*
+         * the slider's default is to start playing when it loads. if
+         * isAutoPlay is set to false, the player won't start unless
+         * the "play" button is clicked
+         */
+        slider1.setIsAutoPlay(false);
 
-          /*
-           * output information to the web console (for developers)
-           */
-          slider1.setDoConsoleLog(true);
+        /*
+         * output information to the web console (for developers)
+         */
+        slider1.setDoConsoleLog(true);
 
-          /*
-           * the length of time each slide is displayed before moving to the
-           *    next when playing
-           * the default is 6 seconds
-           */
-          slider1.setSlideHoldSeconds(4);
+        /*
+         * the length of time each slide is displayed before moving to the
+         *    next when playing
+         * the default is 6 seconds
+         */
+        slider1.setSlideHoldSeconds(4);
 
-          /*
-           * when to display the slide number buttons. defaults to "normal".
-           *  "never" = do not display number buttons
-           *  "normal" = hide number buttons if they need to wrap (responsive)
-           *  "always" = always display number buttons
-           */
-          slider1.setButtonNumberDisplay("always");
+        /*
+         * when to display the slide number buttons. defaults to "normal".
+         *  "never" = do not display number buttons
+         *  "normal" = hide number buttons if they need to wrap (responsive)
+         *  "always" = always display number buttons
+         */
+        slider1.setButtonNumberDisplay("always");
 
-          /*
-           * 
-           */
-          slider1.setTheme("dark");
+        /*
+         * available themes are "default" and "dark"
+         */
+        slider1.setTheme("dark");
 
-          slider1.load("slider1");
-        });
+        slider1.load("slider1");
       </script>
     </div>
   </body>

@@ -141,10 +141,21 @@ class RiotSlider {
   }
 
   /*
+   * load slider when page load is complete
+   */
+  load (elementId) {
+    $(window).on('load', { rsThis: this, elementId: elementId }, function (
+      event
+    ) {
+      event.data.rsThis.loadNow(event.data.elementId)
+    })
+  }
+
+  /*
    * Load/initialize the slider
    * elementId is the id of the HTML div
    */
-  load (elementId) {
+  loadNow (elementId) {
     // check if it was already loaded
     if (this.isLoaded) {
       return false
@@ -333,7 +344,7 @@ class RiotSlider {
     this.elems.main.append(buttonsHtml)
 
     if (this.options.theme === 'dark') {
-      this.elems.main.addClass('riot-slider-dark');
+      this.elems.main.addClass('riot-slider-dark')
     }
   }
 

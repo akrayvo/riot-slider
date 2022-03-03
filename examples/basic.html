@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Riot Slider - Basic Example</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./../riot-slider.css">
-</head>
-<body id="home">
-<div class="mainContainer">
-	<h1>Riot Slider - Basic Example</h1>
+  <head>
+    <meta charset="utf-8" />
+    <title>Riot Slider - Basic Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./../riot-slider.css" />
+  </head>
+  <body id="home">
+    <div class="mainContainer">
+      <h1>Riot Slider - Basic Example</h1>
 
-	<div id="slider1" class="riot-slider">
-		<ul>
-			<li><img src="./blue_jay_bird_nature.jpg" /></li>
-			<li><img src="./squirrel_tree_mammal_paw.jpg" /></li>
-			<li><img src="./port_au_prince_haiti.jpg" /></li>
-			<li><img src="./pennsylvania_landscape_scenic_97427.jpg" /></li>
-			<li><p><b>Main Text Here</b></p><p>More text here!</p></li>
-		</ul>
-	</div>
+      <div id="slider1" class="riot-slider">
+        <ul>
+          <li><img src="./blue_jay_bird_nature.jpg" /></li>
+          <li><img src="./squirrel_tree_mammal_paw.jpg" /></li>
+          <li><img src="./port_au_prince_haiti.jpg" /></li>
+          <li><img src="./pennsylvania_landscape_scenic_97427.jpg" /></li>
+          <li>
+            <p><b>Main Text Here</b></p>
+            <p>More text here!</p>
+          </li>
+        </ul>
+      </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
-    <script src="./../riot-slider.js"></script>
-	<script>
-		$( document ).ready(function() {
-			let slider1 = new RiotSlider('slider1');
-		});</script>
-</div>		
-</body>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="./../riot-slider.js"></script>
+      <script>
+        let slider1 = new RiotSlider("slider1");
+      </script>
+    </div>
+  </body>
 </html>
