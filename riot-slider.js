@@ -22,13 +22,15 @@ class RiotSlider {
     this.slideInterval = null
     this.intervalIsSet = false
     this.isLoaded = false
+    this.sliderWidth = 0
     this.options = {
       useMaterialIcons: false,
       doShowButtons: true,
-      doShowNumberButtons: true,
       isAutoPlay: true,
       doConsoleLogInfo: true,
-      slideHoldSeconds: 5
+      buttonNumberDisplay: 'normal', // never, normal, always
+      theme: 'default',
+      slideHoldSeconds: 6
     }
 
     if (typeof elementId !== 'undefined') {
@@ -37,11 +39,11 @@ class RiotSlider {
   }
 
   /*****************************************************************************
-   * star SET OPTIONS
+   * start SET OPTIONS
    ****************************************************************************/
 
   /*
-   * set useMaterialIcons
+   * set useMaterialIcons option
    * if set, material icons will display for play, stop, previous, and next buttons
    * <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    */
@@ -50,23 +52,15 @@ class RiotSlider {
   }
 
   /*
-   * set doShowButtons
-   * if set, slider related buttons will display. numbers, play/stop, prev/next
+   * set doShowNumberButtons option
+   * if set, slide number buttons will display
    */
   setDoShowButtons (value) {
     this.options.doShowButtons = this.returnBoolean(value)
   }
 
   /*
-   * set doShowNumberButtons
-   * if set, slide number buttons will display
-   */
-  setDoShowNumberButtons (value) {
-    this.options.doShowNumberButtons = this.returnBoolean(value)
-  }
-
-  /*
-   * set isAutoPlay
+   * set isAutoPlay option
    * if set, slider will automatically start playing when loaded
    */
   setIsAutoPlay (value) {
@@ -74,7 +68,7 @@ class RiotSlider {
   }
 
   /*
-   * set doConsoleLog
+   * set doConsoleLog option
    * if set, information will be added to the console log
    * used in the consoleLogInfo(info) function
    */
@@ -83,15 +77,42 @@ class RiotSlider {
   }
 
   /*
-   * set setSlideHoldSeconds
+   * set buttonNumberDisplay option
+   * valid values:
+   *  "never" = do not display number buttons
+   *  "normal" = hide number buttons if they need to wrap
+   *  "always" = always display number buttons
+   */
+  setButtonNumberDisplay (value) {
+    if (value != 'never' && value != 'normal' && value != 'always') {
+      consoleLogInfo('invalid value sent to setButtonNumberDisplay: ' + value)
+      return
+    }
+    this.options.buttonNumberDisplay = value
+  }
+
+  /*
+   * set theme option
+   * current themes are "default" and "dark"
+   */
+  setTheme (value) {
+    if (value != 'default' && value != 'dark') {
+      consoleLogInfo('invalid value sent to setTheme: ' + value)
+      return
+    }
+    this.options.theme = value
+  }
+
+  /*
+   * set slideHoldSeconds option
    * the length of time each slide is displayed before moving to the next when playing
    */
   setSlideHoldSeconds (value) {
     if (isNaN(value)) {
-      return false
+      return
     }
     if (value < 1 || value > 600) {
-      return false
+      return
     }
     this.options.slideHoldSeconds = value
   }
@@ -145,6 +166,8 @@ class RiotSlider {
       )
       return false
     }
+
+    this.loadMaterialIconsIfNeeded()
 
     this.loadHtml()
 
@@ -202,17 +225,52 @@ class RiotSlider {
     let slideWidth = 100 / this.slideCount
     this.elems.slides.css('width', slideWidth + '%')
 
+    this.loadButtonHtml()
+
+    this.elems.slides.filter('[data-caption]').each(function (index) {
+      let cap = $(this).attr('data-caption')
+      if (cap.length > 0) {
+        let capHtml = $('<div></div>')
+          .addClass('slide-caption')
+          .html(cap)
+        $(this).append(capHtml)
+      }
+    })
+
+    // assign the buttons
+    this.elems.slideLinks = this.elems.main.find('.slide-link')
+    this.elems.play = this.elems.main.find('.slide-link-play')
+    this.elems.stop = this.elems.main.find('.slide-link-stop')
+    this.elems.prev = this.elems.main.find('.slide-link-prev')
+    this.elems.next = this.elems.main.find('.slide-link-next')
+  }
+
+  /*
+   * add new HTML button elements: slide numbers, play, pause, previous, next
+   */
+  loadButtonHtml () {
+    if (!this.options.doShowButtons) {
+      return
+    }
+
     // the button container
     let buttonsHtml, buttonHtml, buttonGroupHtml, buttonInnerHtml
     buttonsHtml = $('<div></div>').addClass('buttons')
 
-    // the slide number buttons
-    for (let x = 1; x <= this.slideCount; x++) {
-      buttonHtml = $('<button></button>')
-        .attr('type', 'button')
-        .addClass('slide-link slide-link-' + x)
-        .html(x)
-      buttonsHtml.append(buttonHtml)
+    if (
+      this.options.buttonNumberDisplay === 'normal' ||
+      this.options.buttonNumberDisplay === 'always'
+    ) {
+      buttonGroupHtml = $('<div></div>').addClass('button-number-group')
+      // the slide number buttons
+      for (let x = 1; x <= this.slideCount; x++) {
+        buttonHtml = $('<button></button>')
+          .attr('type', 'button')
+          .addClass('slide-link slide-link-' + x)
+          .html(x)
+        buttonGroupHtml.append(buttonHtml)
+      }
+      buttonsHtml.append(buttonGroupHtml)
     }
 
     // the previous and next buttons
@@ -274,21 +332,41 @@ class RiotSlider {
     // add buttons to html
     this.elems.main.append(buttonsHtml)
 
-    // assign the buttons
-    this.elems.slideLinks = this.elems.main.find('.slide-link')
-    this.elems.play = this.elems.main.find('.slide-link-play')
-    this.elems.stop = this.elems.main.find('.slide-link-stop')
-    this.elems.prev = this.elems.main.find('.slide-link-prev')
-    this.elems.next = this.elems.main.find('.slide-link-next')
+    if (this.options.theme === 'dark') {
+      this.elems.main.addClass('riot-slider-dark');
+    }
   }
 
   /*
    * changes the width of the slide when the browser/window is resized
    */
   updateWidth () {
-    this.sliderWidth = this.elems.main.width()
+    let width = this.elems.main.width()
+    if (width === this.sliderWidth) {
+      return
+    }
+
+    // reset the with of the inner-slider element. this will resize each
+    //    slide inside it
+    this.sliderWidth = width
     let sliderInnerWidth = this.sliderWidth * this.slideCount
     this.elems.slidesInner.css('width', sliderInnerWidth + 'px')
+
+    // reposition the slider so that the slide display correctly
+    // without this. the position will be wrong until the next slide loads
+    this.goToSlide()
+
+    // hide the button numbers if they are likely to wrap
+    if (this.options.buttonNumberDisplay === 'normal') {
+      if (this.slideCount * 48 >= this.sliderWidth) {
+        this.elems.main.find('.button-number-group').addClass('is-hidden')
+        this.consoleLogInfo('number buttons will wrap. hide them')
+      } else {
+        this.elems.main.find('.button-number-group').removeClass('is-hidden')
+        this.consoleLogInfo('number buttons not will wrap. display them')
+      }
+    }
+
     this.consoleLogInfo('Riot Slider width set to ' + sliderInnerWidth)
   }
 
@@ -426,6 +504,35 @@ class RiotSlider {
       Math.round(this.options.slideHoldSeconds * 1000),
       this
     )
+  }
+
+  loadMaterialIconsIfNeeded () {
+    if (!this.options.useMaterialIcons) {
+      return false
+    }
+
+    // Create an element in the DOM for testing if Material Icons are present
+    let spanElem = document.createElement('span')
+    spanElem.className = 'material-icons'
+    spanElem.style.display = 'none'
+    document.body.append(spanElem, document.body.firstChild)
+
+    // See if the computed font-family value is material icons
+    const needToLoadMaterialIcons =
+      window
+        .getComputedStyle(spanElem, null)
+        .getPropertyValue('font-family') !== 'Material Icons'
+
+    // If it's not, load the resource
+    if (needToLoadMaterialIcons) {
+      let linkElem = document.createElement('link')
+      linkElem.href = 'https://fonts.googleapis.com/icon?family=Material+Icons'
+      linkElem.rel = 'stylesheet'
+      document.head.appendChild(linkElem)
+    }
+
+    // Cleanup the original <span> we stuck in the DOM
+    document.body.removeChild(spanElem)
   }
 
   /*****************************************************************************

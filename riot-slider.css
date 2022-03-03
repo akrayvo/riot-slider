@@ -14,9 +14,16 @@ div.riot-slider
  ***************************************************************/
 .riot-slider {
   background-color: #eee;
+  margin:0 auto;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.riot-slider,
+.riot-slider.riot-slider-dark {
+  background-color: #333;
+}
+
 .riot-slider ul,
 .riot-slider li:first-child {
   margin: 0;
@@ -32,6 +39,11 @@ div.riot-slider
 .riot-slider li {
   display: none;
   text-align: center;
+  color:#000;
+}
+
+.riot-slider.riot-slider-dark li {
+  color: #FFF;
 }
 
 .riot-slider li:first-child {
@@ -71,13 +83,36 @@ div.riot-slider
   padding: 0;
   vertical-align: middle;
   text-align: center;
+  position: relative;
 }
 
 /* image in slide */
-.riot-slider li.slide > img {
+.riot-slider li.slide > img,
+.riot-slider li.slide > a > img {
   display: block;
   margin: 0 auto;
   max-width: 100%;
+}
+
+.riot-slider .slide-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  text-shadow: 1px 1px 3px #fff;
+  color: #000;
+  font-size: 22px;
+  padding: 4px;
+  font-family: Verdana, Geneva, sans-serif;
+  box-sizing: border-box;
+}
+
+.riot-slider.riot-slider-dark .slide-caption {
+  background-color: rgba(0, 0, 0, 0.7);
+  text-shadow: 1px 1px 3px #000;
+  color: #fff;
 }
 
 /*************************************************************** 
@@ -89,14 +124,22 @@ div.riot-slider
   text-align: center;
 }
 
-.riot-slider .buttons .button-group {
+.riot-slider .button-group {
   white-space: nowrap;
   display: inline-block;
   margin-left: 10px;
 }
 
+.riot-slider .button-number-group {
+  display: inline-block;
+}
+
+.riot-slider .button-number-group.is-hidden {
+  display: none;
+}
+
 .riot-slider .buttons button {
-  color: #fff;
+  color: #FFF;
   display: inline-block;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -107,13 +150,20 @@ div.riot-slider
   text-decoration: none;
   line-height: normal;
   min-height: 20px;
-  margin: 0 8px 12px 0;
+  margin: 0 4px 12px 4px;
   padding: 6px 10px;
   font-family: Verdana, Segoe, sans-serif;
   background-color: #677;
   border-color: #677;
   border: 1px solid transparent;
-  cursor:pointer;
+  cursor: pointer;
+}
+
+.riot-slider.riot-slider-dark .buttons button {
+  color: #000;
+  background-color: #BCC;
+  border-color: #BCC;
+  border: 1px solid transparent;
 }
 
 .riot-slider .buttons button:hover {
@@ -129,6 +179,11 @@ div.riot-slider
 .riot-slider .buttons button.is-active {
   background-color: #009;
   border-color: #009;
+}
+
+.riot-slider.riot-slider-dark .buttons button.is-active {
+  background-color: #4CF;
+  border-color: #4CF;
 }
 
 /*************************************************************** 

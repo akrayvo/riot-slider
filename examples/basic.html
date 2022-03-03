@@ -3,25 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<title>Riot Slider - Basic Example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./../riot-slider.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 </head>
 <body id="home">
+<div class="mainContainer">
 	<h1>Riot Slider - Basic Example</h1>
-
-<style>
-	
-</style>
 
 	<div id="slider1" class="riot-slider">
 		<ul>
-			<li><img src="https://riotontheset.com/images/screens/episode-7-all-characters.jpg" alt="Alt Text" /></li>
-			<li><img src="https://www.mastergorilla.com/images/yit_phil_elliot.jpg" /></li>
-			
-			<li><img src="https://riotontheset.com/images/screens/episode-8-britney-blake-alex-tim.jpg" alt="Alt Text" /></li>
-			<li><div><b>text here</b><p>More Text</p></div></li>
+			<li><img src="./blue_jay_bird_nature.jpg" /></li>
+			<li><img src="./squirrel_tree_mammal_paw.jpg" /></li>
+			<li><img src="./port_au_prince_haiti.jpg" /></li>
+			<li><img src="./pennsylvania_landscape_scenic_97427.jpg" /></li>
+			<li><p><b>Main Text Here</b></p><p>More text here!</p></li>
 		</ul>
 	</div>
 
@@ -29,11 +25,8 @@
     <script src="./../riot-slider.js"></script>
 	<script>
 		$( document ).ready(function() {
-			let slider1 = new RiotSlider();
-			slider1.setSlideHoldSeconds(1.5);
-			slider1.setUseMaterialIcons(true);
-			slider1.setIsAutoPlay(true);
-			slider1.load('slider1');
+			let slider1 = new RiotSlider('slider1');
 		});</script>
+</div>		
 </body>
 </html>
