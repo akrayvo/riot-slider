@@ -4,6 +4,12 @@
 
 A simple, easy to impletment, jQuery image slider
 
+## Working example
+
+The Riot Slider was created for (and named after) this website. The newest version is on the homepage.
+[Riot On The Set web series](https://riotontheset.com/)
+
+
 ## Requirements
 
 - jQuery >= 3.1
