@@ -10,9 +10,13 @@ A simple, easy to impletment, jQuery image slider
 
 ## Installation
 
-Add **riot-slider.js** and **riot-slider.css** files to your project.
+Add **riot-slider.css** and **riot-slider.js** files to your project.
 
 ## Basic Example
+- include the css file, **riot-slider.css**.
+- in HTML, add an unordered list (ul) with a class of **riot-slider**
+- add list items (li). each item is a slide. Images, text, or any other html can be added to each line item.
+- include the js file, **riot-slider.js**.
 
 ```
 <link rel="stylesheet" href="./riot-slider.css" />
