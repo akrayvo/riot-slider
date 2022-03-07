@@ -1,191 +1,365 @@
 /*
-div.riot-slider
+div.riot-slider-main
   div.slides-outer
     div.slides-inner
-      ul.slide-list
+      ul.riot-slider
         li.slide
-  div.buttons
-    div.button-group
-      a
+          img
+          .slide-caption
+  div.slide-buttons
+    div.slide-number-group
+      button
+    div.slide-button-group
+      button
 */
 
 /*************************************************************** 
- * START dislay the first slide, but hide the rest before the slider is loaded 
+ * START editable values
+ * these are the values that are the most likely to be editable (colors and fonts) */
+
+.riot-slider-main,
+ul.riot-slider {
+  background-color: #ddd; /* background color */
+  min-height: 100px;
+}
+
+.riot-slider-main li.slide,
+ul.riot-slider li {
+  color: #000; /* text in slides */
+  text-shadow: 0 0 2px #fff;
+}
+
+.riot-slider-main .slide-caption,
+.riot-slider .slide-caption {
+  /* option text that overlays the slides */
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #000;
+  text-shadow: 0 0 2px #fff;
+  font-size: 20px;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+.riot-slider-main .slide-buttons button {
+  /* navigation buttons (slide number, play, next, etc) */
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+  font-family: Verdana, Geneva, sans-serif;
+  background-color: #677;
+  border: 1px solid #344;
+}
+
+.riot-slider-main .slide-buttons button:hover {
+  background-color: #899;
+  border-color: #566;
+}
+
+.riot-slider-main .slide-buttons button.is-active,
+.riot-slider-main .slide-buttons button.is-active:hover {
+  background-color: #009;
+  border-color: #000;
+}
+
+.riot-slider-main .slide-buttons button.is-disabled,
+.riot-slider-main .slide-buttons button.is-disabled:hover,
+.riot-slider-main .slide-buttons button.is-disabled.is-active,
+.riot-slider-main .slide-buttons button.is-disabled.is-active:hover {
+  background-color: #ccc;
+  color: #566;
+  text-shadow: 0 0 2px #fff;
+  border-color: #888;
+  cursor: default;
+}
+
+/* END editable values
  ***************************************************************/
-.riot-slider {
-  background-color: #eee;
-  margin:0 auto;
-  padding: 0;
+
+/*************************************************************** 
+ * START dark theme */
+
+.riot-slider-main.riot-slider-dark,
+.riot-slider-main.riot-slider-dark ul.riot-slider {
+  background-color: #333; /* background color */
+}
+
+.riot-slider-main.riot-slider-dark li.slide {
+  color: #fff; /* text */
+  text-shadow: 0 0 2px #000;
+}
+
+.riot-slider-main.riot-slider-dark .slide-caption {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+}
+
+.riot-slider-main.riot-slider-dark .slide-buttons button {
+  color: #000;
+  text-shadow: 0 0 2px #fff;
+  background-color: #bcc;
+  border-color: #bcc;
+  border: 1px solid transparent;
+}
+
+.riot-slider-main.riot-slider-dark .slide-buttons button.is-active {
+  background-color: #4cf;
+  border-color: #2ab;
+}
+
+/* END dark theme
+ ***************************************************************/
+
+/*************************************************************** 
+ * START pastel theme */
+
+.riot-slider-main.riot-slider-pastel,
+.riot-slider-main.riot-slider-pastel ul.riot-slider {
+  background-color: #ded; /* background color */
+}
+
+.riot-slider-main.riot-slider-pastel li.slide {
+  color: #000; /* text */
+  text-shadow: 0 0 2px #fff;
+}
+
+.riot-slider-main.riot-slider-pastel .slide-caption {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #000;
+  text-shadow: 0 0 2px #fff;
+}
+
+.riot-slider-main.riot-slider-pastel .slide-buttons button {
+  color: #000;
+  text-shadow: 0 0 2px #fff;
+  background-color: #ccc;
+  border-color: #ccc;
+  border: 1px solid transparent;
+}
+
+.riot-slider-main.riot-slider-pastel .slide-buttons button.is-active {
+  background-color: #89c;
+  border-color: #679;
+}
+
+/* END  astel theme
+ ***************************************************************/
+
+/*************************************************************** 
+ * START preload styles. simple view before slider is loaded. */
+
+/* PRELOAD - slide list */
+ul.riot-slider {
+  list-style: none;
   width: 100%;
-  box-sizing: border-box;
-}
-
-.riot-slider.riot-slider-dark {
-  background-color: #333;
-}
-
-.riot-slider ul,
-.riot-slider li:first-child {
+  border: 0;
   margin: 0;
   padding: 0;
-  width: 100%;
   box-sizing: border-box;
 }
 
-.riot-slider ul {
-  list-style: none;
-}
-
-.riot-slider li {
-  display: none;
+/* PRELOAD - slide - pre load */
+ul.riot-slider li {
+  display: none; /* hide all slides, the first slide only is displayed in another rule*/
   text-align: center;
-  color:#000;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.riot-slider.riot-slider-dark li {
-  color: #FFF;
-}
-
-.riot-slider li:first-child {
+/* PRELOAD - firstslide */
+ul.riot-slider li:first-child {
   display: list-item;
 }
-/*************************************************************** 
- * END dislay the first slide, but hide the rest before the slider is loaded 
- ***************************************************************/
 
-/* outer slides container */
-.riot-slider .slides-outer {
-  width: 100%;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* inner slides container */
-.riot-slider .slides-inner {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  display: table;
-  transition: 1s;
-}
-
-/* slide list */
-.riot-slider ul.slide-list {
-  display: table-row;
-}
-
-/* slide */
-.riot-slider li.slide {
-  display: table-cell;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
-  text-align: center;
-  position: relative;
-}
-
-/* image in slide */
-.riot-slider li.slide > img,
-.riot-slider li.slide > a > img {
+/* slide image - pre load */
+ul.riot-slider > li > img,
+ul.riot-slider > li > a > img {
   display: block;
   margin: 0 auto;
   max-width: 100%;
-}
-
-.riot-slider .slide-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.7);
-  text-shadow: 1px 1px 3px #fff;
-  color: #000;
-  font-size: 22px;
-  padding: 4px;
-  font-family: Verdana, Geneva, sans-serif;
+  border: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-.riot-slider.riot-slider-dark .slide-caption {
-  background-color: rgba(0, 0, 0, 0.7);
-  text-shadow: 1px 1px 3px #000;
-  color: #fff;
-}
-
-/*************************************************************** 
- * START buttons
+/* END  preload styles. simple view before slider is loaded.
  ***************************************************************/
 
-.riot-slider .buttons {
+/*************************************************************** 
+ * START slider */
+
+/* main container, holds the slide and buttons */
+.riot-slider-main {
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-width: 150px;
+}
+
+/* outer slides container */
+.riot-slider-main .slides-outer {
+  overflow: hidden;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* inner slides container */
+.riot-slider-main .slides-inner {
+  display: table;
+  border-collapse: collapse;
+  transition: 1s;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* slide list */
+.riot-slider-main ul.riot-slider {
+  display: table-row;
+  list-style: none;
+}
+
+/* individual slide */
+.riot-slider-main ul.riot-slider li.slide {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* image that is a direct child of the slide */
+.riot-slider-main ul.riot-slider > li.slide > img,
+.riot-slider-main ul.riot-slider > li.slide > a > img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  border: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* slide caption */
+.riot-slider-main .slide-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  padding: 4px;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* END slider
+ ***************************************************************/
+
+/*************************************************************** 
+ * START buttons */
+
+/* button container */
+.riot-slider-main .slide-buttons {
   padding: 10px 0;
   text-align: center;
+  width: 100%;
+  border: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.riot-slider .button-group {
-  white-space: nowrap;
+/* container for slide number buttons */
+.riot-slider-main .slide-number-group {
+  white-space: normal;
   display: inline-block;
-  margin-left: 10px;
+  margin: 0 5px;
+  border: 0;
+  padding: 0;
 }
 
-.riot-slider .button-number-group {
-  display: inline-block;
-}
-
-.riot-slider .button-number-group.is-hidden {
+/* hide number buttons. class added automatically in javascript
+      based on the slider width and number of slides */
+.riot-slider-main .slide-number-group.is-hidden {
   display: none;
 }
 
-.riot-slider .buttons button {
-  color: #FFF;
+/* button groups (play, pause) (previous, next) */
+.riot-slider-main .slide-button-group {
+  white-space: nowrap;
   display: inline-block;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  margin: 0 6px;
+  border: 0;
+  padding: 0;
+}
+
+/* slide naviagation buttons (slide number, play, stop, previous, next) */
+.riot-slider-main .slide-buttons button {
+  display: inline-block;
   user-select: none;
-  font-size: 16px;
-  border-radius: 3px;
-  text-decoration: none;
-  line-height: normal;
+  border-radius: 4px;
   min-height: 20px;
-  margin: 0 4px 12px 4px;
+  margin: 6px 4px;
   padding: 6px 10px;
-  font-family: Verdana, Segoe, sans-serif;
-  background-color: #677;
-  border-color: #677;
-  border: 1px solid transparent;
   cursor: pointer;
+  font-size: 16px;
 }
 
-.riot-slider.riot-slider-dark .buttons button {
-  color: #000;
-  background-color: #BCC;
-  border-color: #BCC;
-  border: 1px solid transparent;
-}
-
-.riot-slider .buttons button:hover {
-  background-color: #899;
-  border-color: #899;
-}
-
-.riot-slider .buttons button .material-icons {
+/* slide naviagation buttons (slide number, play, stop, previous, next) */
+.riot-slider-main .slide-buttons button .material-icons {
   font-size: 14px;
   line-height: normal;
 }
 
-.riot-slider .buttons button.is-active {
-  background-color: #009;
-  border-color: #009;
-}
-
-.riot-slider.riot-slider-dark .buttons button.is-active {
-  background-color: #4CF;
-  border-color: #4CF;
-}
+/* END buttons
+ ***************************************************************/
 
 /*************************************************************** 
- * END buttons
- ***************************************************************/
+ * START side previous/next links */
+
+ /* side link container */
+.riot-slider-main .slide-side-link {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  height: 100%;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* side link icon */
+.riot-slider-main .slide-side-link > span,
+.riot-slider-main .slide-side-link > span > i.material-icons {
+  color: #000;
+  text-shadow: 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #fff;
+  font-size: 44px;
+}
+
+/* left (previous) side */
+.riot-slider-main .slide-side-link-prev {
+  left: 0;
+  padding: 1px 25px 1px 5px;
+}
+
+/* right (next) side */
+.riot-slider-main .slide-side-link-next {
+  right: 0;
+  padding: 1px 5px 1px 25px;
+}
+
+/* END side previous/next links 
+  ****************************************************************/
