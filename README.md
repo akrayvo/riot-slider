@@ -41,7 +41,6 @@ jQuery, jQuery mobile, and Material Icons will automatically be added if they ar
 
 ```
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 ```
 
 ```
@@ -49,11 +48,11 @@ jQuery, jQuery mobile, and Material Icons will automatically be added if they ar
 <script src="https://code.jquery.com/mobile/1.5.0-rc1/jquery.mobile-1.5.0-rc1.min.js"></script>
 ```
 
-## Customizations
+## Slider Customizations
 
 The slider is set up by adding an undered list (ul). Data attributes can be added to customize the format and functionalty of the slider.
 
-# HTML Example
+# ul example
 
 The following code will display the slider with a dark background and each slide will display for 3 seconds when the slider is playing.
 
@@ -112,3 +111,15 @@ The following code will display the slider with a dark background and each slide
 
 - the length of time each slide is displayed before moving to the next when playing
 - default = 6
+
+## Slide Captions
+
+Each slide is a list item (li). The data-caption attribute can be added to place a caption on the slide.
+
+# li example
+
+The following code will display the slider with a dark background and each slide will display for 3 seconds when the slider is playing.
+
+```
+<li data-caption="Blue Jay"><img src="./images/blue-jay.jpg" /></li>
+```
