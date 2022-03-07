@@ -70,6 +70,14 @@ ul.riot-slider li {
   cursor: default;
 }
 
+/* side link icon */
+.riot-slider-main .slide-side-link > span,
+.riot-slider-main .slide-side-link > span > i.material-icons {
+  color: #000;
+  text-shadow: 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #fff;
+  font-size: 44px;
+}
+
 /* END editable values
  ***************************************************************/
 
@@ -339,14 +347,6 @@ ul.riot-slider > li > a > img {
   display: flex;
   align-items: center;
   cursor: pointer;
-}
-
-/* side link icon */
-.riot-slider-main .slide-side-link > span,
-.riot-slider-main .slide-side-link > span > i.material-icons {
-  color: #000;
-  text-shadow: 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #fff;
-  font-size: 44px;
 }
 
 /* left (previous) side */

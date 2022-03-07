@@ -15,178 +15,100 @@ Add **riot-slider.js** and **riot-slider.css** files to your project.
 ## Basic Example
 
 ```
-<link rel="stylesheet" href="./riot-slider.css">
+<link rel="stylesheet" href="./riot-slider.css" />
 ```
 
 ```
-<div id="slider1" class="riot-slider">
-    <ul>
-        <li data-caption="Blue Jay"><img src="./blue_jay_bird_nature.jpg" /></li>
-        <li><img src="./squirrel_tree_mammal_paw.jpg" /></li>
-        <li><img src="./port_au_prince_haiti.jpg" /></li>
-        <li><img src="./pennsylvania_landscape_scenic_97427.jpg" /></li>
-        <li><p><b>Main Text Here</b></p><p>More text here!</p></li>
-    </ul>
-</div>
+<ul class="riot-slider">
+    <li><img src="./images/blue-jay.jpg" /></li>
+    <li><img src="./images/squirrel.jpg" /></li>
+    <li><img src="./images/port-au-prince-haiti.jpg" /></li>
+    <li><img src="./images/pennsylvania-landscape.jpg" /></li>
+    <li>
+        <p><b>Text Slide Here</b></p>
+        <p>More text here!</p>
+    </li>
+</ul>
+```
+
+```
+<script src="./riot-slider.js"></script>
+```
+
+## Optional css and js
+
+jQuery, jQuery mobile, and Material Icons will automatically be added if they are needed and not already available. If they are needed, it may be more efficient to include them before including `riot-slider.js`
+
+```
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 ```
 
 ```
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="./../riot-slider.js"></script>
-<script> let slider1 = new RiotSlider("slider1"); });
-</script>
+<script src="https://code.jquery.com/mobile/1.5.0-rc1/jquery.mobile-1.5.0-rc1.min.js"></script>
 ```
 
-## Settings
+## Customizations
 
-### private $doAddIdAttributeFromName = false;
+The slider is set up by adding an undered list (ul). Data attributes can be added to customize the format and functionalty of the slider.
 
-- automatically add an `id` attribute with the same value as `name`
-- does not affect radio inputs because they can have multiple elements with the same `name`
-- if set to false, `id` can be by added with the `$moreAttributes` parameter
-- if set to true, `id` can be by overridden with the `$moreAttributes` parameter
+# HTML Example
 
-```
-$form->setDoAddIdAttributeFromName(false);
-$form->text('first_name');
-// <input type="text" name="first_name" value="">
-
-$form->setDoAddIdAttributeFromName(true);
-$form->text('first_name');
-// <input type="text" name="first_name" value="" id="first_name">
-```
-
-### private $doReturnHtml = false;
-
-- return the HTML elements as a string
-- if not set, output is written to the screen
+The following code will display the slider with a dark background and each slide will display for 3 seconds when the slider is playing.
 
 ```
-$form->setDoReturnHtml(false);
-$form->text('first_name');
-// <input type="text" name="first_name" value="">
-
-$form->setDoReturnHtml(true);
-$html = $form->text('first_name');
-// (outputs nothing)
-echo $html;
-// <input type="text" name="first_name" value="">
+<ul class="riot-slider" data-slide-hold-seconds="3" data-theme="dark">
 ```
 
-### private $isXhtml = false;
+# data-do-console-log = true/false
 
-- close tag elements, ex: `<input type="input" name="name"> vs <input type="input" name="name" />`
-- boolean attributes will have values, ex: `<option value="1" selected="selected">` vs. `<option value="1" selected>`
+- if set, information will be added to the console log
+- generally only needed for testing/development
+- default = false
 
-```
-$form->setIsXhtml(false);
-$form->text('first_name', '', '[readonly]');
-// <input type="text" name="first_name" value="" readonly>
+# data-use-material-icons = true/false
 
-$form->setIsXhtml(true);
-$form->text('first_name', '', '[readonly]');
-// <input type="text" name="first_name" value="" readonly="readonly" />
-```
+- if set, material icons will display for play, stop, previous, and next buttons
+- if unavailable, they will automatically be added from fonts.googleapis.com
+- default = false
 
-### private $doPassedStringCleanup = true;
+# data-is-auto-play = true/false
 
-- string cleanup of passed variables
-- removes HTML tags
-- used in `getPost()`, `getGet()`, and `getPassed()` functions
+- if set, slider will automatically start playing when loaded
+- default = true
 
-```
-// passed from form: $first_name = "<b>Joe</b>"
+# data-do-show-buttons = true/false
 
-$form->setDoPassedStringCleanup(true);
-$first_name = $form->getPassed('first_name');
-$form->text('first_name', $first_name);
-// <input type="text" name="first_name" value="Joe">
+- if set, slide buttons will display (numbers, play, pause, previous, next)
+- default = true
 
-$form->setDoPassedStringCleanup(false);
-$first_name = $form->getPassed('first_name');
-$form->text('first_name', $first_name);
-// (note that the value is HTML encoded)
-// <input type="text" name="first_name" value="&lt;b&gt;Joe&lt;/b&gt;">
-```
+# data-do-swipe-on-touchscreen = true/false
 
-### private $doSelectOptionValueEqualsText = false;
+- left and right swipe will be available via jquery mobile
+- default = true
 
-- if set, `select` `option` `value` and display text will both be set to the options array item value, so `[2=>'a', => 3=>'b']` will output `<option value="a">a</option><option value="b">b</option>`
-- if NOT set, `select` `option` `value` will be the array key and the display text will be the array value, so `[2=>'a', => 3=>'b']` will output `<option value="2">a</option><option value="3">b</option>`
+# data-button-number-display = default/never/always
 
-```
-$options = ['NY'=>'New York', 'OH'=>'Ohio'];
+- "never" = do not display number buttons
+- "normal" = hide number buttons if they need to wrap
+- "always" = always display number buttons
+- default = normal
 
-$form->setDoSelectOptionValueEqualsText(false);
-$form->select('state', $options);
-// <select name="state"><option value="NY">New York</option><option value="OH">Ohio</option></select>
+# data-previous-next-display = buttons/sides/none/both
 
-$form->setDoSelectOptionValueEqualsText(true);
-$form->select('state', $options);
-// <select name="state"><option value="New York">New York</option><option value="Ohio">Ohio</option></select>
-```
+- "buttons" = display prev/next buttons near the slide numbers and play/pause buttons
+- "sides" = display prev/next links on the left and right of the slide
+- "none" = display no prev/next links/buttons
+- "both" = display prev/next in with the buttons And sides of the slides
+- default = sides
 
-## Using form tag attributes
+# data-theme = default/dark/pastel
 
-All form element functions include a `$moreAttributes` paramter. It takes an array of attributes with the $key as the attribute name and the value being the value.
+- the theme/color sceme of the slider
+- default = normal
 
-If the key is numeric, it will be handled as a boolean attribute (with no value such as `readonly`, `disabled`, `checked`, etc.).
+# data-slide-hold-seconds = (number)
 
-Common attributes would include `id`, `class`, `style`, `placeholder`, etc.
-
-```
-$moreAttributes = ['style'=>'padding:20px;', 'placeholder'=>'Name', 'readonly'];
-$form->text('name', '', $moreAttributes);
-```
-
-HTML output
-
-```
-<input type="text" name="name" value="" style="padding:20px" placeholder="Name" readonly>
-```
-
-## Functions
-
-### Settings
-
-- `setDoAddIdAttributeFromName($value)` - set $doAddIdAttributeFromName
-- `setDoReturnHtml($value)` - set $doReturnHtml
-- `setIsXhtml($value)` - set $isXhtml
-- `setDoPassedStringCleanup($value)` - set $doPassedStringCleanup
-- `setDoSelectOptionValueEqualsText($value)` - set $doSelectOptionValueEqualsText
-
-### String Manipulation
-
-- `htmlEscape($string)` - escape a string to display in HTML
-- `stringCleanup($string)` - strips HTML tags from a string
-
-### Get Passed Data
-
-- `getPassed($var, $returnOnfail = '')` - retrive a value from $\_GET or $\_POST
-- `getPost($var, $returnOnfail = '')` - retrive a value from $\_POST
-- `getGet($var, $returnOnfail = '')` - retrive a value from $\_GET
-
-### Input elements &lt;input&gt;
-
-- `hidden($name, $value = '', $moreAttributes = [])` - `<input type="hidden">`
-- `text($name, $value = '', $moreAttributes = [])` - `<input type="text">`
-- `color($name, $value = '', $moreAttributes = [])` - `<input type="color">`
-- `number($name, $value = '', $moreAttributes = [])` - `<input type="number">`
-- `range($name, $min, $max, $value = '', $moreAttributes = [])` - `<input type="range">`
-- `email($name, $value = '', $moreAttributes = [])` - `<input type="email">`
-- `tel($name, $value = '', $moreAttributes = [])` - `<input type="tel">`
-- `date($name, $value = '', $moreAttributes = [])` - `<input type="date">`
-- `password($name, $moreAttributes = [])` - `<input type="password">`
-- `checkbox($name, $isChecked = false, $value = 1, $moreAttributes = [])` - `<input type="checkbox">`
-- `radio($name, $value, $selectedValue = '', $moreAttributes = [])` - `<input type="radio">`
-- `submit($value = '', $name = '', $moreAttributes = [])` - `<input type="submit">`
-- `reset($value = '', $name = '', $moreAttributes = [])` - `<input type="reset">`
-
-### Other form elements
-
-- `formStart($action = '', $method = '', $moreAttributes = array())` - `<form>`
-- `formEnd()` - `</form>`
-- `textarea($name, $value = '', $moreAttributes = [])` - `<textarea>`
-- `button($html = 'Submit', $moreAttributes = [])` - `<button>`
-- `select($name, $options, $value = null, $moreAttributes = [])` - `<select><option>`
-- `selectByRecordSet($name, $records, $valueKey, $displayKey, $emptyText = '', $value = null, $moreAttributes = [])` - `<select><option>`
+- the length of time each slide is displayed before moving to the next when playing
+- default = 6
