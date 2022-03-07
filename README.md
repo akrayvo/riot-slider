@@ -10,16 +10,16 @@ A simple, easy to impletment, jQuery image slider
 
 ## Installation
 
-Add **riot-slider.css** and **riot-slider.js** files to your project.
+Add **riot-slider.min.css** and **riot-slider.min.js** files to your project.
 
 ## Basic Example
-- include the css file, **riot-slider.css**.
+- include the css file, **riot-slider.min.css** or **riot-slider.css**.
 - in HTML, add an unordered list (ul) with a class of **riot-slider**
 - add list items (li). each item is a slide. Images, text, or any other html can be added to each line item.
-- include the js file, **riot-slider.js**.
+- include the js file, **riot-slider.min.js** or **riot-slider.js**.
 
 ```
-<link rel="stylesheet" href="./riot-slider.css" />
+<link rel="stylesheet" href="./riot-slider.min.css" />
 ```
 
 ```
@@ -36,12 +36,12 @@ Add **riot-slider.css** and **riot-slider.js** files to your project.
 ```
 
 ```
-<script src="./riot-slider.js"></script>
+<script src="./riot-slider.min.js"></script>
 ```
 
 ## Optional css and js
 
-jQuery, jQuery mobile, and Material Icons will automatically be added if they are needed and not already available. If they are needed, it may be more efficient to include them before including `riot-slider.js`
+jQuery, jQuery mobile, and Material Icons will automatically be added if they are needed and not already available. If they are needed, it may be more efficient to include them before including `riot-slider.min.js`
 
 ```
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
