@@ -253,8 +253,10 @@ class RiotSlider {
     if (this.options.isAutoPlay) {
       // go to the curret slide and start player
       this.goToSlide()
-      this.elems.play.addClass('is-active')
-      this.elems.stop.removeClass('is-disabled')
+	  if (this.options.doShowButtons) {
+		this.elems.play.addClass('is-active')
+		this.elems.stop.removeClass('is-disabled')
+	  }
       this.startInterval()
     }
 
@@ -583,19 +585,21 @@ class RiotSlider {
       })
     }
 
-    // slider "play" button
-    this.elems.play.on('click', { rsThis: this }, function (event) {
-      event.preventDefault()
-      event.stopPropagation()
-      event.data.rsThis.playClicked()
-    })
+	if (this.options.doShowButtons) {
+		// slider "play" button
+		this.elems.play.on('click', { rsThis: this }, function (event) {
+		  event.preventDefault()
+		  event.stopPropagation()
+		  event.data.rsThis.playClicked()
+		})
 
-    // slider "stop" button
-    this.elems.stop.on('click', { rsThis: this }, function (event) {
-      event.preventDefault()
-      event.stopPropagation()
-      event.data.rsThis.stopClicked()
-    })
+		// slider "stop" button
+		this.elems.stop.on('click', { rsThis: this }, function (event) {
+		  event.preventDefault()
+		  event.stopPropagation()
+		  event.data.rsThis.stopClicked()
+		})
+	}
 
     if (this.doShowPrevNextButtons()) {
       // slider "previous" button
@@ -664,13 +668,15 @@ class RiotSlider {
     var val = (this.currentSlideNumber - 1) * this.sliderWidth
     this.elems.slidesInner.css('margin-left', '-' + val + 'px')
 
-    // remove the "is-active" class from all slide numbers
-    this.elems.slideLinkNumbers.removeClass('is-active')
+	if (this.elems.slideLinkNumbers) {
+		// remove the "is-active" class from all slide numbers
+		this.elems.slideLinkNumbers.removeClass('is-active')
 
-    // add the "is-active" class to the displaying slide number
-    $(this.elems.slideLinkNumbers[this.currentSlideNumber - 1]).addClass(
-      'is-active'
-    )
+		// add the "is-active" class to the displaying slide number
+		$(this.elems.slideLinkNumbers[this.currentSlideNumber - 1]).addClass(
+			'is-active'
+		)
+    }
 
     this.consoleLogInfo('slide loaded: ' + this.currentSlideNumber)
   }
@@ -681,8 +687,10 @@ class RiotSlider {
    */
   stopInterval () {
     if (this.isIntervalSet) {
-      this.elems.play.removeClass('is-active')
-      this.elems.stop.addClass('is-disabled')
+	  if (this.options.doShowButtons) {
+		this.elems.play.removeClass('is-active')
+		this.elems.stop.addClass('is-disabled')
+	  }
       clearInterval(this.slideInterval)
       this.isIntervalSet = false
     }
