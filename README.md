@@ -143,5 +143,5 @@ Custom buttons can be added outside of the main slider element to move to the ne
 
 ```
 <a class="riot-slider-custom-link-prev" href="#">Previous Slide!</a><br> 
-<a class="riot-slider-custom-link-prev" href="#">Next Slide!</a>
+<a class="riot-slider-custom-link-next" href="#">Next Slide!</a>
 ```
