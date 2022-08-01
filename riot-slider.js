@@ -29,7 +29,9 @@ class RiotSlider {
       prev: null,
       next: null,
       sidePrev: null,
-      sideNext: null
+      sideNext: null,
+	  customPrevButton: null,
+      customNextButton: null
     }
     this.currentSlideNumber = 1
     this.slideCount = 0
@@ -402,9 +404,13 @@ class RiotSlider {
 
     // set side elements
     if (this.doShowPrevNextSides()) {
-      this.elems.sidePrev = this.elems.main.find('.slide-side-link-prev')
-      this.elems.sideNext = this.elems.main.find('.slide-side-link-next')
+      this.elems.sidePrev = $('.slide-side-link-prev')
+      this.elems.sideNext = $('.slide-side-link-next')
     }
+	
+	
+	this.elems.customPrevButton = $('.riot-slider-custom-link-prev')
+    this.elems.customNextButton = $('.riot-slider-custom-link-next')
   }
 
   /*
@@ -600,6 +606,19 @@ class RiotSlider {
 		  event.data.rsThis.stopClicked()
 		})
 	}
+
+	this.elems.customPrevButton.on('click', { rsThis: this }, function (event) {
+		event.data.rsThis.consoleLogInfo('custom previous clicked')
+        event.preventDefault()
+        event.stopPropagation()
+        event.data.rsThis.prevClicked()
+      })
+    this.elems.customNextButton.on('click', { rsThis: this }, function (event) {
+		event.data.rsThis.consoleLogInfo('custom next clicked')
+        event.preventDefault()
+        event.stopPropagation()
+        event.data.rsThis.nextClicked()
+      })
 
     if (this.doShowPrevNextButtons()) {
       // slider "previous" button
