@@ -136,10 +136,12 @@ The following code will display the slider with a dark background and each slide
 
 # Custom Previous and Next Buttons or Links
 
-Custom buttons can be added outside of the main slider element to move to the next or previous button by adding classes.
+Custom buttons can be added outside of the main slider element to move to the next or previous slide by adding classes. This will work with any element
+(button, img, a, div, etc)
 - class="riot-slider-custom-link-prev"
 - class="riot-slider-custom-link-next"
 
 ```
-<a class="riot-slider-custom-link-prev" href="#">Previous Slide!</a> | <a class="riot-slider-custom-link-prev" href="#">Next Slide!</a>
+<a class="riot-slider-custom-link-prev" href="#">Previous Slide!</a><br> 
+<a class="riot-slider-custom-link-prev" href="#">Next Slide!</a>
 ```
