@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Riot Slider - Customized Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- including material icons beforehand is not required, but it is more efficient  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./../riot-slider.min.css" />
+  </head>
+  <body id="home">
+    <div class="mainContainer">
+      <h1>Riot Slider - Custom Previous and Next Links Example</h1>
+
+      <!-- 
+        available options - set as data attributes on the ul tag
+          
+        data-do-console-log = true/false
+        * if set, information will be added to the console log
+        * generally only needed for testing/development
+        * default = false
+
+        data-use-material-icons = true/false
+        * if set, material icons will display for play, stop, previous, and next buttons
+        * if unavailable, they will automatically be added from fonts.googleapis.com
+        * default = false
+
+        data-is-auto-play = true/false
+        * if set, slider will automatically start playing when loaded
+        * default = true
+
+        data-do-show-buttons = true/false
+        * if set, slide buttons will display (numbers, play, pause, previous, next)
+        * default = true
+
+        data-do-swipe-on-touchscreen = true/false
+        * left and right swipe will be available via jquery mobile
+        * default = true
+
+        data-button-number-display = default/never/always
+        * "never" = do not display number buttons
+        * "normal" = hide number buttons if they need to wrap
+        * "always" = always display number buttons
+        * default = normal
+
+        data-previous-next-display = buttons/sides/none/both
+        * "buttons" = display prev/next buttons near the slide numbers and play/pause buttons
+        * "sides" = display prev/next links on the left and right of the slide
+        * "none" = display no prev/next links/buttons
+        * "both" = display prev/next in with the buttons And sides of the slides
+        * default = sides
+        
+        data-theme = default/dark/pastel
+        * the theme/color sceme of the slider
+        * default = normal
+
+        data-slide-hold-seconds = (number)
+        * the length of time each slide is displayed before moving to the next when playing
+         * default = 6
+
+        -->
+
+      <ul
+        class="riot-slider"
+        data-do-console-log="false"
+        data-use-material-icons="true"
+        data-is-auto-play="false"
+        data-do-show-buttons="false"
+        data-do-swipe-on-touchscreen="true"
+        data-button-number-display="default"
+        data-previous-next-display="none"
+        data-theme="default"
+        data-slide-hold-seconds="2"
+      >
+        <!-- a caption will automatically be added if the "data-caption" attribute
+            is added to the li tag  -->
+        <li data-caption="Blue Jay">
+          <img src="./images/blue-jay.jpg" />
+        </li>
+        <li><img src="./images/squirrel.jpg" /></li>
+        <li><img src="./images/port-au-prince-haiti.jpg" /></li>
+        <li><img src="./images/pennsylvania-landscape.jpg" /></li>
+        <li>
+          <p><b>Main Text Here</b></p>
+          <p>More text here!</p>
+        </li>
+      </ul>
+	  
+	  <!-- 
+	  add links outside of the slider to go to the previous and next slides by adding classes: 
+		class="riot-slider-custom-link-prev"
+		class="riot-slider-custom-link-prev"
+	  can be set up with any element (image, div, button, etc)
+	  * note that if you are using multiple sliders on a page, all sliders will be affected
+	  -->
+	  
+	  <br><a class="riot-slider-custom-link-prev" href="#">Previous Slide</a>
+	  <br><br><a class="riot-slider-custom-link-prev" href="#">Next Slide</a>
+	  
+	  <br><bR><br><a class="riot-slider-custom-link-prev" href="#">Another Link to Previous Slide</a>
+	  <br><br><a class="riot-slider-custom-link-prev" href="#">Another Link to Next Slide</a>
+
+      <!-- including jquery beforehand is not required, but it is more efficient  -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+      <script src="./../riot-slider.js"></script>
+    </div>
+  </body>
+</html>
