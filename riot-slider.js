@@ -777,6 +777,8 @@ class RiotSlider {
       return false
     }
 
+	$.mobile.loadingMessage = false;
+
     let rsThis = this
 
     var url = $.getScript(RiotSlider.jqueryMobileUrl, function (
