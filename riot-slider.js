@@ -1,8 +1,8 @@
 class RiotSlider {
   static jqueryUrl =
     'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'
-  static jqueryMobileUrl =
-    'https://code.jquery.com/mobile/1.5.0-rc1/jquery.mobile-1.5.0-rc1.min.js'
+  //static jqueryMobileUrl =
+  //  'https://code.jquery.com/mobile/1.5.0-rc1/jquery.mobile-1.5.0-rc1.min.js'
   static materialIconsUrl =
     'https://fonts.googleapis.com/icon?family=Material+Icons'
 
@@ -33,25 +33,33 @@ class RiotSlider {
 	  customPrevButton: null,
       customNextButton: null
     }
+	this.swipeInfo = {
+		startX: null,
+		//startY: null,
+		startTime: null
+	}
     this.currentSlideNumber = 1
     this.slideCount = 0
     this.slideInterval = null
     this.isIntervalSet = false
     this.isLoaded = false
-    this.isMobileBinded = false
+    //this.isMobileBinded = false
     this.sliderWidth = 0
     this.options = {
       doConsoleLog: false,
       useMaterialIcons: true,
       isAutoPlay: true,
       doShowButtons: true,
-      doSwipeOnTouchscreen: true,
+      //doSwipeOnTouchscreen: true,
       buttonNumberDisplay: 'default',
       previousNextDisplay: 'both',
       theme: 'default',
-      slideHoldSeconds: 6
+      slideHoldSeconds: 6,
+	  swipeMaxTimeMs: 1000,
+	  swipeMinPx: 100,
+	  swipeMinPercent: 20
     }
-
+	
     this.load(elem)
   }
 
@@ -96,9 +104,9 @@ class RiotSlider {
    * set doSwipeOnTouchscreen option
    * left and right swipe will be available via jquery mobile
    */
-  setDoSwipeOnTouchscreen (value) {
+  /*setDoSwipeOnTouchscreen (value) {
     this.options.doSwipeOnTouchscreen = this.returnBoolean(value)
-  }
+  }*/
 
   /*
    * set buttonNumberDisplay option
@@ -125,7 +133,7 @@ class RiotSlider {
    *  "buttons" = display prev/next buttons near the slide numbers and play/pause buttons
    *  "sides" = display prev/next links on the left and right of the slide
    *  "none" = display no prev/next links/buttons
-   *  "both" = display prev/next in with the buttons And sides of the slides
+   *  "both" = display prev/next in with the buttons and sides of each slide
    */
   setPreviousNextDisplay (value) {
     value = value.toLowerCase().trim()
@@ -164,9 +172,68 @@ class RiotSlider {
     if (value < 1 || value > 600) {
       return
     }
+	this.consoleLogInfo('set slideHoldSeconds: ' + value)
     this.options.slideHoldSeconds = value
   }
-
+  
+  /*
+   * set swipeMaxTimeMs option
+   * the max time in milliseconds between the start and end swipe on a touchscreen
+   * if the time is too long, it is likely that the user isn't swiping or there was a missed event
+   */
+  setSwipeMaxTimeMs (value) {
+    if (isNaN(value)) {
+      return
+    }
+	// must be between 1 MS and 5 seconds
+    if (value < 1 || value > 5000) {
+      return
+    }
+	
+	this.consoleLogInfo('set swipeMaxTimeMs: ' + value)
+    this.options.swipeMaxTimeMs = value
+  }
+  
+  /*
+   * set setSwipeMinPx option
+   * the minimum number of pixels for a swipe on touchscreen
+   * used with swipeMinPercent. if swipeMinPx is not reached, 
+   * 	we can still swipe if swipeMinPercent is reached
+   */
+  setSwipeMinPx (value) {
+    if (isNaN(value)) {
+      return
+    }
+	// must be between 1 MS and 5 seconds
+    if (value < 1 || value > 5000) {
+      return
+    }
+	
+	this.consoleLogInfo('set setSwipeMinPx: ' + value)
+    this.options.swipeMinPx = value
+  }
+  
+  /*
+   * set swipeMinPercent option
+   * the minimum percent of pixels for a swipe on touchscreen
+   * the percentage of the swipe compared to the full slider width
+   * makes it easier to recognize swipes on smaller screens
+   * used with swipeMinPercent. if swipeMinPx is reached, 
+   * 	swipeMinPercent is not checked
+   */
+  setSwipeMinPercent (value) {
+    if (isNaN(value)) {
+      return
+    }
+	// must be between 1 MS and 5 seconds
+    if (value < 1 || value > 5000) {
+      return
+    }
+	
+	this.consoleLogInfo('set swipeMinPercent: ' + value)
+    this.options.swipeMinPercent = value
+  }  
+  
   /*****************************************************************************
    * end SET OPTIONS
    ****************************************************************************/
@@ -250,7 +317,7 @@ class RiotSlider {
 
     this.bindAll()
 
-    this.loadJqueryMoblieIfNeeded()
+    //this.loadJqueryMoblieIfNeeded()
 
     if (this.options.isAutoPlay) {
       // go to the curret slide and start player
@@ -293,10 +360,10 @@ class RiotSlider {
       this.setDoShowButtons(elem.attr(attrName))
     }
 
-    attrName = 'data-do-swipe-on-touchscreen'
-    if (typeof elem.attr(attrName) !== 'undefined') {
-      this.setDoSwipeOnTouchscreen(elem.attr(attrName))
-    }
+    //attrName = 'data-do-swipe-on-touchscreen'
+    //if (typeof elem.attr(attrName) !== 'undefined') {
+   //   this.setDoSwipeOnTouchscreen(elem.attr(attrName))
+   // }
 
     attrName = 'data-button-number-display'
     if (typeof elem.attr(attrName) !== 'undefined') {
@@ -543,7 +610,7 @@ class RiotSlider {
           this.consoleLogInfo('number buttons will wrap. hide them')
         } else {
           this.elems.slideNumberGroup.removeClass('is-hidden')
-          this.consoleLogInfo('number buttons not will wrap. display them.')
+          this.consoleLogInfo('number buttons will not wrap. display them.')
         }
       }
     }
@@ -650,13 +717,163 @@ class RiotSlider {
       })
     }
 
-    this.bindMobile()
+    //this.bindMobile()
+	
+	// vanilla javascript bind on swipe events
+	for (var x = 0; x< this.elems.slides.length; x++) {
+		this.elems.slides[x].params = { rsThis: this };
+		this.elems.slides[x].addEventListener("touchstart", function (event) {
+			//this
+		//}
+			event.preventDefault();
+			this.params.rsThis.slideSwipeStartEvent(event);
+		  
+		});
+		this.elems.slides[x].addEventListener("touchend", function (event) {
+			event.preventDefault();
+		  this.params.rsThis.slideSwipeEndEvent(event);
+		});
+	}
+	
+	// touch events
+	/*this.elems.slides.on('startswipe', { rsThis: this }, function (event) {
+      //event.preventDefault()
+      //event.stopPropagation()
+      event.data.rsThis.nextClicked()
+	  console.log('startswipe');
+    })
+
+    this.elems.slides.on('endswipe', { rsThis: this }, function (event) {
+      //event.preventDefault()
+      //event.stopPropagation()
+      event.data.rsThis.prevClicked()
+	  console.log('endswipe');
+    })*/
+  }
+  
+   /*
+   * Touchscreen swipe started
+   * save time in milliseconds and the X and Y position
+   */
+  slideSwipeStartEvent (event) {
+
+	  var temp = this.getSwipeXYFromEvent(event);
+	  var x = temp[0];
+	  //var y = temp[1];
+
+	  if (!x) {
+		  this.swipeInfoReset();
+		  this.consoleLogInfo('slideSwipeStartEvent - no position found, stop swipe action;');
+		  return;
+	  }
+	  
+	  var d = new Date();
+	  
+	  this.swipeInfo.startX = x;
+	  //this.swipeInfo.startY = y;
+	  this.swipeInfo.startTime = d.getTime();
+	  
+	  this.consoleLogInfo('slideSwipeStartEvent - position = '+x);
+  }
+  
+   /*
+   * Touchscreen swipe ended
+   * make sure the time and position is valid
+   * go to the next or previous slide
+   */
+  slideSwipeEndEvent (event) {
+	  
+	  if (!this.swipeInfo.startX || !this.swipeInfo.startTime) {
+		  this.swipeInfoReset();
+		  this.consoleLogInfo('slideSwipeEndEvent - end swipe with no start swipe, stop swipe action');
+		  return;
+	  }
+	  
+	  const d = new Date();
+	  const timeDif = d.getTime() - this.swipeInfo.startTime;
+	  
+	  if (timeDif > this.options.swipeMaxTimeMs) {
+		  this.swipeInfoReset();
+		  // too much time passed bewteen start and end. either event missed or very slow slide.
+		  this.consoleLogInfo('slideSwipeEndEvent - slide time too long, stop swipe action, max MS = '
+			+this.options.swipeMaxTimeMs+', MS taken = ' + timeDif);
+		  return;
+	  }
+	  
+	  const temp = this.getSwipeXYFromEvent(event);
+	  const x = temp[0];
+	  //const y = temp[1];
+
+	  if (!x) {
+		  this.swipeInfoReset();
+		  this.consoleLogInfo('slideSwipeEndEvent - no position found, stop swipe action');
+		  return;
+	  }
+	  
+	  const xDif = Math.abs(x - this.swipeInfo.startX);
+	  //const yDif = Math.abs(y - this.swipeInfo.startY);
+	  	  
+	  this.consoleLogInfo('slideSwipeEndEvent - x='+xDif+'px, time='+timeDif+'MS');
+
+	  
+	  if (xDif < this.options.swipeMinPx) {
+		  this.consoleLogInfo('slideSwipeEndEvent - xDif='+xDif+', < '+this.options.swipeMinPx+', check percednt');
+		  
+		  const windowWidth = this.elems.main.width();
+		  const widthPercent = xDif / windowWidth * 100;
+		  
+		  if (widthPercent < this.options.swipeMinPercent) {
+			  this.swipeInfoReset();
+			  this.consoleLogInfo('slideSwipeEndEvent - xDif='+xDif+', windowWidth='+windowWidth+
+			  ', percent='+(Math.round(widthPercent*100)/100)+'%, < 20%, stop swipe action');
+			  return;
+		  }
+	  }
+	  
+	  if (x > this.swipeInfo.startX) {
+		  this.consoleLogInfo('slideSwipeEndEvent - previous');
+		  this.incrementSlideNumber(-1);
+	  } else {
+		  this.consoleLogInfo('slideSwipeEndEvent - next');
+		  this.incrementSlideNumber();
+	  }
+	  this.goToSlide();
+  }
+  
+  swipeInfoReset () {
+	this.swipeInfo.startX = null;
+	this.swipeInfo.startY = null;
+	this.swipeInfo.startTime = null;
+  }
+  
+  getSwipeXYFromEvent (event) {	
+	  if (event.TouchList) {
+		  if (event.TouchList[0])
+		  {
+			if (event.TouchList[0].screenX && event.TouchList[0].screenY) {
+				console.log('pageX', event.TouchList[0].pageX, vent.TouchList[0].pageY);
+				return [event.TouchList[0].pageX, vent.TouchList[0].pageY]
+			}
+		  }
+	  }
+	  
+	  if (event.changedTouches) {
+		  if (event.changedTouches[0])
+		  {
+			if (event.changedTouches[0].screenX && event.changedTouches[0].screenX) {
+				console.log('pageX', event.changedTouches[0].screenX, event.changedTouches[0].screenY);
+				return [event.changedTouches[0].screenX, event.changedTouches[0].screenY]
+			}
+		  }
+	  }
+	  
+	  return [null, null];
   }
 
   /*
    * Bind mobile swipe actions if needed
    */
-  bindMobile () {
+  /*bindMobile () {
     if (!$.mobile) {
       return
     }
@@ -677,7 +894,7 @@ class RiotSlider {
       event.data.rsThis.prevClicked()
     })
     this.isMobileBinded = true
-  }
+  }*/
 
   /*
    * display the current slide
@@ -764,7 +981,7 @@ class RiotSlider {
   /*
    * load jquery mobile from googleapis if needed
    */
-  loadJqueryMoblieIfNeeded () {
+  /*loadJqueryMoblieIfNeeded () {
     if (!this.options.doSwipeOnTouchscreen) {
       return false
     }
@@ -788,7 +1005,7 @@ class RiotSlider {
     ) {
       rsThis.bindMobile()
     })
-  }
+  }*/
 
   /*
    * load material icons from googleapis if needed
