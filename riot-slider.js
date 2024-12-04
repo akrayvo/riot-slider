@@ -1,8 +1,6 @@
 class RiotSlider {
   static jqueryUrl =
     'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'
-  //static jqueryMobileUrl =
-  //  'https://code.jquery.com/mobile/1.5.0-rc1/jquery.mobile-1.5.0-rc1.min.js'
   static materialIconsUrl =
     'https://fonts.googleapis.com/icon?family=Material+Icons'
 
@@ -18,7 +16,7 @@ class RiotSlider {
    * if the element ID is NOT passed, the slider will not be loaded until the load()
    *     function is called. this will give a chance to set parameters.
    */
-  constructor (elem) {
+  constructor(elem) {
     this.elems = {
       main: null,
       slidesInner: null,
@@ -30,36 +28,34 @@ class RiotSlider {
       next: null,
       sidePrev: null,
       sideNext: null,
-	  customPrevButton: null,
+      customPrevButton: null,
       customNextButton: null
     }
-	this.swipeInfo = {
-		startX: null,
-		//startY: null,
-		startTime: null
-	}
+    this.swipeInfo = {
+      startX: null,
+      startY: null,
+      startTime: null
+    }
     this.currentSlideNumber = 1
     this.slideCount = 0
     this.slideInterval = null
     this.isIntervalSet = false
     this.isLoaded = false
-    //this.isMobileBinded = false
     this.sliderWidth = 0
     this.options = {
       doConsoleLog: false,
       useMaterialIcons: true,
       isAutoPlay: true,
       doShowButtons: true,
-      //doSwipeOnTouchscreen: true,
       buttonNumberDisplay: 'default',
       previousNextDisplay: 'both',
       theme: 'default',
       slideHoldSeconds: 6,
-	  swipeMaxTimeMs: 900,
-	  swipeMinPx: 60,
-	  swipeMinPercent: 13
+      swipeMaxTimeMs: 900,
+      swipeMinPx: 60,
+      swipeMinPercent: 13
     }
-	
+
     this.load(elem)
   }
 
@@ -71,8 +67,10 @@ class RiotSlider {
    * set doConsoleLog option
    * if set, information will be added to the console log
    */
-  setDoConsoleLog (value) {
+  setDoConsoleLog(value) {
     this.options.doConsoleLog = this.returnBoolean(value)
+    this.consoleLogInfo('set doConsoleLog:')
+    this.consoleLogInfo(this.options.doConsoleLog)
   }
 
   /*
@@ -80,33 +78,31 @@ class RiotSlider {
    * if set, material icons will display for play, stop, previous, and next buttons
    * if unavailable, they will automatically be added from fonts.googleapis.com
    */
-  setUseMaterialIcons (value) {
+  setUseMaterialIcons(value) {
     this.options.useMaterialIcons = this.returnBoolean(value)
+    this.consoleLogInfo('set useMaterialIcons:')
+    this.consoleLogInfo(this.options.useMaterialIcons)
   }
 
   /*
    * set isAutoPlay option
    * if set, slider will automatically start playing when loaded
    */
-  setIsAutoPlay (value) {
+  setIsAutoPlay(value) {
     this.options.isAutoPlay = this.returnBoolean(value)
+    this.consoleLogInfo('set isAutoPlay:')
+    this.consoleLogInfo(this.options.isAutoPlay)
   }
 
   /*
    * set doShowButtons option
    * if set, slide buttons will display (numbers, play, pause, previous, next)
    */
-  setDoShowButtons (value) {
+  setDoShowButtons(value) {
     this.options.doShowButtons = this.returnBoolean(value)
+    this.consoleLogInfo('set doShowButtons:')
+    this.consoleLogInfo(this.options.doShowButtons)
   }
-
-  /*
-   * set doSwipeOnTouchscreen option
-   * left and right swipe will be available via jquery mobile
-   */
-  /*setDoSwipeOnTouchscreen (value) {
-    this.options.doSwipeOnTouchscreen = this.returnBoolean(value)
-  }*/
 
   /*
    * set buttonNumberDisplay option
@@ -115,7 +111,7 @@ class RiotSlider {
    *  "default" = hide number buttons if they need to wrap
    *  "always" = always display number buttons
    */
-  setButtonNumberDisplay (value) {
+  setButtonNumberDisplay(value) {
     value = this.returnString(value, true);
     if (typeof value !== 'string') {
       // return value will be set to null on error
@@ -139,7 +135,7 @@ class RiotSlider {
    *  "none" = display no prev/next links/buttons
    *  "both" = display prev/next in with the buttons and sides of each slide
    */
-  setPreviousNextDisplay (value) {
+  setPreviousNextDisplay(value) {
     value = this.returnString(value, true);
     if (typeof value !== 'string') {
       // return value will be set to null on error
@@ -159,7 +155,7 @@ class RiotSlider {
    * set theme option
    * current themes are "default", "dark", "pastel"
    */
-  setTheme (value) {
+  setTheme(value) {
     value = this.returnString(value, true);
     if (typeof value !== 'string') {
       // return value will be set to null on error
@@ -178,31 +174,31 @@ class RiotSlider {
    * the length of time each slide is displayed before moving to the next when playing
    * value must be between 1 second and 600 seconds (10 minutes)
    */
-  setSlideHoldSeconds (value) {
+  setSlideHoldSeconds(value) {
     value = this.returnInt(value, 1, 600)
-	  if (typeof value !== 'number') {
+    if (typeof value !== 'number') {
       return
     }
-	  this.consoleLogInfo('set slideHoldSeconds: ' + value)
+    this.consoleLogInfo('set slideHoldSeconds: ' + value)
     this.options.slideHoldSeconds = value
   }
-  
+
   /*
    * set swipeMaxTimeMs option
    * the max time in milliseconds between the start and end swipe on a touchscreen
    * if the time is too long, it is likely that the user isn't swiping or there was a missed event
    * value must be between 1 MS and 5000MS (5 seconds)
    */
-  setSwipeMaxTimeMs (value) {
-	value = this.returnInt(value, 1, 5000)
-	 if (typeof value !== 'number') {
+  setSwipeMaxTimeMs(value) {
+    value = this.returnInt(value, 1, 5000)
+    if (typeof value !== 'number') {
       return
     }
-	
-	this.consoleLogInfo('set swipeMaxTimeMs: ' + value)
+
+    this.consoleLogInfo('set swipeMaxTimeMs: ' + value)
     this.options.swipeMaxTimeMs = value
   }
-  
+
   /*
    * set setSwipeMinPx option
    * the minimum number of pixels for a swipe on touchscreen
@@ -210,16 +206,16 @@ class RiotSlider {
    * 	we can still swipe if swipeMinPercent is reached
    * value must be between 1 and 3000 pixels
    */
-  setSwipeMinPx (value) {
+  setSwipeMinPx(value) {
     value = this.returnInt(value, 1, 3000)
-	  if (typeof value !== 'number') {
+    if (typeof value !== 'number') {
       return
     }
-	
-	this.consoleLogInfo('set setSwipeMinPx: ' + value)
+
+    this.consoleLogInfo('set setSwipeMinPx: ' + value)
     this.options.swipeMinPx = value
   }
-  
+
   /*
    * set swipeMinPercent option
    * the minimum percent of pixels for a swipe on touchscreen
@@ -229,16 +225,16 @@ class RiotSlider {
    * 	swipeMinPercent is not checked
    * value must be between 1 and 100 percent
    */
-  setSwipeMinPercent (value) {
+  setSwipeMinPercent(value) {
     value = this.returnInt(value, 1, 100)
-	  if (typeof value !== 'number') {
+    if (typeof value !== 'number') {
       return
     }
-	
-	  this.consoleLogInfo('set swipeMinPercent: ' + value)
+
+    this.consoleLogInfo('set swipeMinPercent: ' + value)
     this.options.swipeMinPercent = value
-  }  
-  
+  }
+
   /*****************************************************************************
    * end SET OPTIONS
    ****************************************************************************/
@@ -246,32 +242,21 @@ class RiotSlider {
   /*
    * write information to the console if doConsoleLog is true
    */
-  consoleLogInfo (info) {
+  consoleLogInfo(info) {
     if (this.options.doConsoleLog) {
       console.log(info)
     }
   }
 
-  /*getIsTouchDevice () {
-    if (RiotSlider.isTouchDevice === null) {
-      RiotSlider.isTouchDevice =
-        'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        navigator.msMaxTouchPoints > 0
-    }
-
-    return RiotSlider.isTouchDevice
-  }*/
-
   /*
    * convert a variable to either true or false
    */
-  returnBoolean (value) {
-	
+  returnBoolean(value) {
+
     if (typeof value === 'string') {
       // to lower case for string comparison, so "True" and "TRUE" will be "true"
       value = value.toLowerCase();
-      
+
       if (value === 'true' || value === 'on' || value === 'yes' || value === '1') {
         return true
       }
@@ -279,47 +264,47 @@ class RiotSlider {
         return false
       }
     }
-	
+
     if (value) {
       return true
     }
     return false
   }
-  
+
   /*
    * convert a variable to an integer
    * note: bigint type will return null since we don't need to handles number that large
    * returns null on failure (not a number, invalid type, etc)
    */
-  returnInt (value, min, max) {
-	var valueType = typeof value;
-	
-	if (valueType === 'string') {
-		if (isNaN(value)) {
-		  return null
-		}
-		value = parseInt(value);
-	} else if (valueType === 'number') {
-		value = Math.round(value);
-	} else {
-		// only a number or string can be passed
-		return null
-	}
-    
-	if (value < min || value > max) {
-		return null
-	}
-	
-	return value
+  returnInt(value, min, max) {
+    var valueType = typeof value;
+
+    if (valueType === 'string') {
+      if (isNaN(value)) {
+        return null
+      }
+      value = parseInt(value);
+    } else if (valueType === 'number') {
+      value = Math.round(value);
+    } else {
+      // only a number or string can be passed
+      return null
+    }
+
+    if (value >= min && value <= max) {
+      return value
+    }
+
+    return null
   }
-  
+
   /*
    * convert a variable to a string
    * if doStringCleanup is set, trim and set lower case
    */
-  returnString (value, doCleanup) {
+  returnString(value, doCleanup) {
     var valueType = typeof value;
-    
+
     if (valueType === 'string') {
       // already a string
       const doCleanupType = typeof doCleanup;
@@ -328,21 +313,21 @@ class RiotSlider {
           value = value.trim().toLowerCase();
         }
       }
+      return value
     } else if (valueType === 'number') {
-      value = value.toString()
-    } else {
-      // only a number or string type can be passed
-      return null
+      return value.toString()
     }
-    
-    return value
-  }  
+
+    return null
+
+
+  }
 
   /*
    * Load/initialize the slider
    * sliderElem is the id of the HTML ul
    */
-  load (sliderElem) {
+  load(sliderElem) {
     // check if it was already loaded
     if (this.isLoaded) {
       return false
@@ -360,8 +345,8 @@ class RiotSlider {
     if (tagName !== 'ul') {
       this.consoleLogInfo(
         'Riot Slider not loaded. tag is "' +
-          tagName +
-          '". must be "ul" (unordered list).'
+        tagName +
+        '". must be "ul" (unordered list).'
       )
       return false
     }
@@ -386,10 +371,10 @@ class RiotSlider {
     if (this.options.isAutoPlay) {
       // go to the curret slide and start player
       this.goToSlide()
-	  if (this.options.doShowButtons) {
-		this.elems.play.addClass('is-active')
-		this.elems.stop.removeClass('is-disabled')
-	  }
+      if (this.options.doShowButtons) {
+        this.elems.play.addClass('is-active')
+        this.elems.stop.removeClass('is-disabled')
+      }
       this.startInterval()
     }
 
@@ -403,7 +388,7 @@ class RiotSlider {
   /*
    * read settings/options from data attributes
    */
-  loadOptions (elem) {
+  loadOptions(elem) {
     let attrName = 'data-do-console-log'
     if (typeof elem.attr(attrName) !== 'undefined') {
       this.setDoConsoleLog(elem.attr(attrName))
@@ -426,8 +411,8 @@ class RiotSlider {
 
     //attrName = 'data-do-swipe-on-touchscreen'
     //if (typeof elem.attr(attrName) !== 'undefined') {
-   //   this.setDoSwipeOnTouchscreen(elem.attr(attrName))
-   // }
+    //   this.setDoSwipeOnTouchscreen(elem.attr(attrName))
+    // }
 
     attrName = 'data-button-number-display'
     if (typeof elem.attr(attrName) !== 'undefined') {
@@ -443,55 +428,55 @@ class RiotSlider {
     if (typeof elem.attr(attrName) !== 'undefined') {
       this.setTheme(elem.attr(attrName))
     }
-	
-	attrName = 'data-slide-hold-seconds'
+
+    attrName = 'data-slide-hold-seconds'
     if (typeof elem.attr(attrName) !== 'undefined') {
       this.setSlideHoldSeconds(elem.attr(attrName))
     }
-	
-	attrName = 'data-swipe-max-time-ms'
+
+    attrName = 'data-swipe-max-time-ms'
     if (typeof elem.attr(attrName) !== 'undefined') {
       this.setSwipeMaxTimeMs(elem.attr(attrName))
     }
-	
-	attrName = 'data-swipe-min-px'
+
+    attrName = 'data-swipe-min-px'
     if (typeof elem.attr(attrName) !== 'undefined') {
       this.setSwipeMinPx(elem.attr(attrName))
     }
-	
-	attrName = 'data-swipe-min-percent'
+
+    attrName = 'data-swipe-min-percent'
     if (typeof elem.attr(attrName) !== 'undefined') {
       this.setSwipeMinPercent(elem.attr(attrName))
     }
-	
-	// check that additional additional data fields are not set. they could be used by the page, so it is
-	// not a definite error, but it is likely that an invalid or misspelled parameter was used
-	// ex "data-show-buttons" instead of "data-do-show-buttons"
-	// if possible issue is found, disply if console logging is turned on
-	
-	const validData = ['data-do-console-log', 'data-use-material-icons', 'data-is-auto-play', 
-		'data-do-show-buttons', 'data-button-number-display', 'data-previous-next-display', 
-		'data-theme', 'data-slide-hold-seconds', 'data-swipe-max-time-ms', 
-		'data-swipe-min-px', 'data-swipe-min-percent']
-		
-	const attributes = elem[0].attributes;
-	for (var attribute in attributes) {
-		if (Object.prototype.hasOwnProperty.call(attributes, attribute)) {
-			// do stuff
-			const attr = attributes[attribute].name.toLowerCase();
-			if (attr.substring(0, 5) === 'data-') {
-				if (validData.indexOf(attr) < 0) {
-					this.consoleLogInfo('Possible error - container data field not recognized - ' + attr)
-				}
-			}
-		}
-	}
+
+    // check that additional additional data fields are not set. they could be used by the page, so it is
+    // not a definite error, but it is likely that an invalid or misspelled parameter was used
+    // ex "data-show-buttons" instead of "data-do-show-buttons"
+    // if possible issue is found, disply if console logging is turned on
+
+    const validData = ['data-do-console-log', 'data-use-material-icons', 'data-is-auto-play',
+      'data-do-show-buttons', 'data-button-number-display', 'data-previous-next-display',
+      'data-theme', 'data-slide-hold-seconds', 'data-swipe-max-time-ms',
+      'data-swipe-min-px', 'data-swipe-min-percent']
+
+    const attributes = elem[0].attributes;
+    for (var attribute in attributes) {
+      if (Object.prototype.hasOwnProperty.call(attributes, attribute)) {
+        // do stuff
+        const attr = attributes[attribute].name.toLowerCase();
+        if (attr.substring(0, 5) === 'data-') {
+          if (validData.indexOf(attr) < 0) {
+            this.consoleLogInfo('Possible error - container data field not recognized - ' + attr)
+          }
+        }
+      }
+    }
   }
 
   /*
    * add new HTML elements, add classes to existing elements, and use selectors to save elements
    */
-  loadHtml (slideElem) {
+  loadHtml(slideElem) {
     // add additional classes
     this.elems.slides = slideElem.find(' > li')
     this.elems.slides.addClass('slide')
@@ -576,16 +561,16 @@ class RiotSlider {
       this.elems.sidePrev = $('.slide-side-link-prev')
       this.elems.sideNext = $('.slide-side-link-next')
     }
-	
-	
-	this.elems.customPrevButton = $('.riot-slider-custom-link-prev')
+
+
+    this.elems.customPrevButton = $('.riot-slider-custom-link-prev')
     this.elems.customNextButton = $('.riot-slider-custom-link-next')
   }
 
   /*
    * if the button numbers will display
    */
-  doShowButtonNumbers () {
+  doShowButtonNumbers() {
     if (!this.options.doShowButtons) {
       return false
     }
@@ -601,7 +586,7 @@ class RiotSlider {
   /*
    * if the previous and next buttons should display
    */
-  doShowPrevNextButtons () {
+  doShowPrevNextButtons() {
     if (!this.options.doShowButtons) {
       return false
     }
@@ -619,7 +604,7 @@ class RiotSlider {
   /*
    * if the previous and next slide links should display
    */
-  doShowPrevNextSides () {
+  doShowPrevNextSides() {
     if (
       this.options.previousNextDisplay !== 'sides' &&
       this.options.previousNextDisplay !== 'both'
@@ -632,7 +617,7 @@ class RiotSlider {
   /*
    * get HTML for the bottom buttos section
    */
-  getButtonHtml (prevHtml, nextHtml) {
+  getButtonHtml(prevHtml, nextHtml) {
     if (!this.options.doShowButtons) {
       return ''
     }
@@ -688,7 +673,7 @@ class RiotSlider {
   /*
    * changes the width of the slide when the browser/window is resized
    */
-  updateWidth (isInitial) {
+  updateWidth(isInitial) {
     if (typeof isInitial === 'undefined') {
       isInitial = false
     }
@@ -730,7 +715,7 @@ class RiotSlider {
    * remove the is-active class from a button after a pause.
    * used on the stop, previous, and next buttons
    */
-  removeActiveClassIn1Sec (element) {
+  removeActiveClassIn1Sec(element) {
     setInterval(
       function (element) {
         element.removeClass('is-active')
@@ -743,7 +728,7 @@ class RiotSlider {
   /*
    * Bind actions to buttons and window resize
    */
-  bindAll () {
+  bindAll() {
     // browswer window resize
     $(window).on('resize', { rsThis: this }, function (event) {
       event.data.rsThis.updateWidth()
@@ -760,34 +745,34 @@ class RiotSlider {
       })
     }
 
-	if (this.options.doShowButtons) {
-		// slider "play" button
-		this.elems.play.on('click', { rsThis: this }, function (event) {
-		  event.preventDefault()
-		  event.stopPropagation()
-		  event.data.rsThis.playClicked()
-		})
-
-		// slider "stop" button
-		this.elems.stop.on('click', { rsThis: this }, function (event) {
-		  event.preventDefault()
-		  event.stopPropagation()
-		  event.data.rsThis.stopClicked()
-		})
-	}
-
-	this.elems.customPrevButton.on('click', { rsThis: this }, function (event) {
-		event.data.rsThis.consoleLogInfo('custom previous clicked')
+    if (this.options.doShowButtons) {
+      // slider "play" button
+      this.elems.play.on('click', { rsThis: this }, function (event) {
         event.preventDefault()
         event.stopPropagation()
-        event.data.rsThis.prevClicked()
+        event.data.rsThis.playClicked()
       })
+
+      // slider "stop" button
+      this.elems.stop.on('click', { rsThis: this }, function (event) {
+        event.preventDefault()
+        event.stopPropagation()
+        event.data.rsThis.stopClicked()
+      })
+    }
+
+    this.elems.customPrevButton.on('click', { rsThis: this }, function (event) {
+      event.data.rsThis.consoleLogInfo('custom previous clicked')
+      event.preventDefault()
+      event.stopPropagation()
+      event.data.rsThis.prevClicked()
+    })
     this.elems.customNextButton.on('click', { rsThis: this }, function (event) {
-		event.data.rsThis.consoleLogInfo('custom next clicked')
-        event.preventDefault()
-        event.stopPropagation()
-        event.data.rsThis.nextClicked()
-      })
+      event.data.rsThis.consoleLogInfo('custom next clicked')
+      event.preventDefault()
+      event.stopPropagation()
+      event.data.rsThis.nextClicked()
+    })
 
     if (this.doShowPrevNextButtons()) {
       // slider "previous" button
@@ -820,201 +805,158 @@ class RiotSlider {
     }
 
     //this.bindMobile()
-	
-	// vanilla javascript bind on swipe events
-	for (var x = 0; x< this.elems.slides.length; x++) {
-		this.elems.slides[x].params = { rsThis: this };
-		this.elems.slides[x].addEventListener("touchstart", function (event) {
-			//this
-		//}
-			event.preventDefault();
-			this.params.rsThis.slideSwipeStartEvent(event);
-		  
-		});
-		this.elems.slides[x].addEventListener("touchend", function (event) {
-			event.preventDefault();
-		  this.params.rsThis.slideSwipeEndEvent(event);
-		});
-	}
-	
-	// touch events
-	/*this.elems.slides.on('startswipe', { rsThis: this }, function (event) {
-      //event.preventDefault()
-      //event.stopPropagation()
-      event.data.rsThis.nextClicked()
-	  console.log('startswipe');
-    })
 
-    this.elems.slides.on('endswipe', { rsThis: this }, function (event) {
-      //event.preventDefault()
-      //event.stopPropagation()
-      event.data.rsThis.prevClicked()
-	  console.log('endswipe');
-    })*/
-  }
-  
-   /*
-   * Touchscreen swipe started
-   * save time in milliseconds and the X and Y position
-   */
-  slideSwipeStartEvent (event) {
+    // vanilla javascript bind on swipe events
+    for (var x = 0; x < this.elems.slides.length; x++) {
+      this.elems.slides[x].params = { rsThis: this };
+      this.elems.slides[x].addEventListener("touchstart", function (event) {
+        //this
+        //}
+        event.preventDefault();
+        this.params.rsThis.slideSwipeStartEvent(event);
 
-	  var temp = this.getSwipeXYFromEvent(event);
-	  var x = temp[0];
-	  //var y = temp[1];
-
-	  if (!x) {
-		  this.swipeInfoReset();
-		  this.consoleLogInfo('slideSwipeStartEvent - no position found, stop swipe action;');
-		  return;
-	  }
-	  
-	  var d = new Date();
-	  
-	  this.swipeInfo.startX = x;
-	  //this.swipeInfo.startY = y;
-	  this.swipeInfo.startTime = d.getTime();
-	  
-	  this.consoleLogInfo('slideSwipeStartEvent - position = '+x);
-  }
-  
-   /*
-   * Touchscreen swipe ended
-   * make sure the time and position is valid
-   * go to the next or previous slide
-   */
-  slideSwipeEndEvent (event) {
-	  
-	  if (!this.swipeInfo.startX || !this.swipeInfo.startTime) {
-		  this.swipeInfoReset();
-		  this.consoleLogInfo('slideSwipeEndEvent - end swipe with no start swipe, stop swipe action');
-		  return;
-	  }
-	  
-	  const d = new Date();
-	  const timeDif = d.getTime() - this.swipeInfo.startTime;
-	  
-	  if (timeDif > this.options.swipeMaxTimeMs) {
-		  this.swipeInfoReset();
-		  // too much time passed bewteen start and end. either event missed or very slow slide.
-		  this.consoleLogInfo('slideSwipeEndEvent - slide time too long, stop swipe action, max MS = '
-			+this.options.swipeMaxTimeMs+', MS taken = ' + timeDif);
-		  return;
-	  }
-	  
-	  const temp = this.getSwipeXYFromEvent(event);
-	  const x = temp[0];
-	  //const y = temp[1];
-
-	  if (!x) {
-		  this.swipeInfoReset();
-		  this.consoleLogInfo('slideSwipeEndEvent - no position found, stop swipe action');
-		  return;
-	  }
-	  
-	  const xDif = Math.abs(x - this.swipeInfo.startX);
-	  //const yDif = Math.abs(y - this.swipeInfo.startY);
-	  	  
-	  this.consoleLogInfo('slideSwipeEndEvent - x='+xDif+'px, time='+timeDif+'MS');
-
-	  
-	  if (xDif < this.options.swipeMinPx) {
-		  this.consoleLogInfo('slideSwipeEndEvent - xDif='+xDif+', < '+this.options.swipeMinPx+', check percednt');
-		  
-		  const windowWidth = this.elems.main.width();
-		  const widthPercent = xDif / windowWidth * 100;
-		  
-		  if (widthPercent < this.options.swipeMinPercent) {
-			  this.swipeInfoReset();
-			  this.consoleLogInfo('slideSwipeEndEvent - xDif='+xDif+', windowWidth='+windowWidth+
-			  ', percent='+(Math.round(widthPercent*100)/100)+'%, < 20%, stop swipe action');
-			  return;
-		  }
-	  }
-	  
-	  this.stopInterval()
-	  if (x > this.swipeInfo.startX) {
-		  this.consoleLogInfo('slideSwipeEndEvent - previous');
-		  this.incrementSlideNumber(-1);
-	  } else {
-		  this.consoleLogInfo('slideSwipeEndEvent - next');
-		  this.incrementSlideNumber();
-	  }
-	  this.goToSlide();
-  }
-  
-  swipeInfoReset () {
-	this.swipeInfo.startX = null;
-	this.swipeInfo.startY = null;
-	this.swipeInfo.startTime = null;
-  }
-  
-  getSwipeXYFromEvent (event) {	
-	  if (event.TouchList) {
-		  if (event.TouchList[0])
-		  {
-			if (event.TouchList[0].screenX && event.TouchList[0].screenY) {
-				console.log('pageX', event.TouchList[0].pageX, vent.TouchList[0].pageY);
-				return [event.TouchList[0].pageX, vent.TouchList[0].pageY]
-			}
-		  }
-	  }
-	  
-	  if (event.changedTouches) {
-		  if (event.changedTouches[0])
-		  {
-			if (event.changedTouches[0].screenX && event.changedTouches[0].screenX) {
-				console.log('pageX', event.changedTouches[0].screenX, event.changedTouches[0].screenY);
-				return [event.changedTouches[0].screenX, event.changedTouches[0].screenY]
-			}
-		  }
-	  }
-	  
-	  return [null, null];
+      });
+      this.elems.slides[x].addEventListener("touchend", function (event) {
+        event.preventDefault();
+        this.params.rsThis.slideSwipeEndEvent(event);
+      });
+    }
   }
 
   /*
-   * Bind mobile swipe actions if needed
-   */
-  /*bindMobile () {
-    if (!$.mobile) {
-      return
+  * Touchscreen swipe started
+  * save time in milliseconds and the X and Y position
+  */
+  slideSwipeStartEvent(event) {
+
+    var temp = this.getSwipeXYFromEvent(event);
+    var x = temp[0];
+    //var y = temp[1];
+
+    if (!x) {
+      this.swipeInfoReset();
+      this.consoleLogInfo('slideSwipeStartEvent - no position found, stop swipe action;');
+      return;
     }
 
-    if (this.isMobileBinded) {
-      return
+    var d = new Date();
+
+    this.swipeInfo.startX = x;
+    //this.swipeInfo.startY = y;
+    this.swipeInfo.startTime = d.getTime();
+
+    this.consoleLogInfo('slideSwipeStartEvent - position = ' + x);
+  }
+
+  /*
+  * Touchscreen swipe ended
+  * make sure the time and position is valid
+  * go to the next or previous slide
+  */
+  slideSwipeEndEvent(event) {
+
+    if (!this.swipeInfo.startX || !this.swipeInfo.startTime) {
+      this.swipeInfoReset();
+      this.consoleLogInfo('slideSwipeEndEvent - end swipe with no start swipe, stop swipe action');
+      return;
     }
 
-    this.elems.slides.on('swipeleft', { rsThis: this }, function (event) {
-      event.preventDefault()
-      event.stopPropagation()
-      event.data.rsThis.nextClicked()
-    })
+    const d = new Date();
+    const timeDif = d.getTime() - this.swipeInfo.startTime;
 
-    this.elems.slides.on('swiperight', { rsThis: this }, function (event) {
-      event.preventDefault()
-      event.stopPropagation()
-      event.data.rsThis.prevClicked()
-    })
-    this.isMobileBinded = true
-  }*/
+    if (timeDif > this.options.swipeMaxTimeMs) {
+      this.swipeInfoReset();
+      // too much time passed bewteen start and end. either event missed or very slow slide.
+      this.consoleLogInfo('slideSwipeEndEvent - slide time too long, stop swipe action, max MS = '
+        + this.options.swipeMaxTimeMs + ', MS taken = ' + timeDif);
+      return;
+    }
+
+    const temp = this.getSwipeXYFromEvent(event);
+    const x = temp[0];
+    //const y = temp[1];
+
+    if (!x) {
+      this.swipeInfoReset();
+      this.consoleLogInfo('slideSwipeEndEvent - no position found, stop swipe action');
+      return;
+    }
+
+    const xDif = Math.abs(x - this.swipeInfo.startX);
+    //const yDif = Math.abs(y - this.swipeInfo.startY);
+
+    this.consoleLogInfo('slideSwipeEndEvent - x=' + xDif + 'px, time=' + timeDif + 'MS');
+
+
+    if (xDif < this.options.swipeMinPx) {
+      this.consoleLogInfo('slideSwipeEndEvent - xDif=' + xDif + ', < ' + this.options.swipeMinPx + ', check percednt');
+
+      const windowWidth = this.elems.main.width();
+      const widthPercent = xDif / windowWidth * 100;
+
+      if (widthPercent < this.options.swipeMinPercent) {
+        this.swipeInfoReset();
+        this.consoleLogInfo('slideSwipeEndEvent - xDif=' + xDif + ', windowWidth=' + windowWidth +
+          ', percent=' + (Math.round(widthPercent * 100) / 100) + '%, < 20%, stop swipe action');
+        return;
+      }
+    }
+
+    this.stopInterval()
+    if (x > this.swipeInfo.startX) {
+      this.consoleLogInfo('slideSwipeEndEvent - previous');
+      this.incrementSlideNumber(-1);
+    } else {
+      this.consoleLogInfo('slideSwipeEndEvent - next');
+      this.incrementSlideNumber();
+    }
+    this.goToSlide();
+  }
+
+  swipeInfoReset() {
+    this.swipeInfo.startX = null;
+    //this.swipeInfo.startY = null;
+    this.swipeInfo.startTime = null;
+  }
+
+  getSwipeXYFromEvent(event) {
+    if (event.TouchList) {
+      if (event.TouchList[0]) {
+        if (event.TouchList[0].screenX && event.TouchList[0].screenY) {
+          console.log('pageX', event.TouchList[0].pageX, vent.TouchList[0].pageY);
+          return [event.TouchList[0].pageX, vent.TouchList[0].pageY]
+        }
+      }
+    }
+
+    if (event.changedTouches) {
+      if (event.changedTouches[0]) {
+        if (event.changedTouches[0].screenX && event.changedTouches[0].screenX) {
+          console.log('pageX', event.changedTouches[0].screenX, event.changedTouches[0].screenY);
+          return [event.changedTouches[0].screenX, event.changedTouches[0].screenY]
+        }
+      }
+    }
+
+    return [null, null];
+  }
 
   /*
    * display the current slide
    */
-  goToSlide () {
+  goToSlide() {
     // change the left margin of the slider container so that that correct slide displays
     var val = (this.currentSlideNumber - 1) * this.sliderWidth
     this.elems.slidesInner.css('margin-left', '-' + val + 'px')
 
-	if (this.elems.slideLinkNumbers) {
-		// remove the "is-active" class from all slide numbers
-		this.elems.slideLinkNumbers.removeClass('is-active')
+    if (this.elems.slideLinkNumbers) {
+      // remove the "is-active" class from all slide numbers
+      this.elems.slideLinkNumbers.removeClass('is-active')
 
-		// add the "is-active" class to the displaying slide number
-		$(this.elems.slideLinkNumbers[this.currentSlideNumber - 1]).addClass(
-			'is-active'
-		)
+      // add the "is-active" class to the displaying slide number
+      $(this.elems.slideLinkNumbers[this.currentSlideNumber - 1]).addClass(
+        'is-active'
+      )
     }
 
     this.consoleLogInfo('slide loaded: ' + this.currentSlideNumber)
@@ -1024,12 +966,12 @@ class RiotSlider {
    * stop the upcoming move to the next slide.
    * ex: if the "stop" button is hit
    */
-  stopInterval () {
+  stopInterval() {
     if (this.isIntervalSet) {
-	  if (this.options.doShowButtons) {
-		this.elems.play.removeClass('is-active')
-		this.elems.stop.addClass('is-disabled')
-	  }
+      if (this.options.doShowButtons) {
+        this.elems.play.removeClass('is-active')
+        this.elems.stop.addClass('is-disabled')
+      }
       clearInterval(this.slideInterval)
       this.isIntervalSet = false
     }
@@ -1040,7 +982,7 @@ class RiotSlider {
    * usually the optional value is no passed to set +1 (next slide)
    * -1 can be passed to go to the previous slide
    */
-  incrementSlideNumber (increment) {
+  incrementSlideNumber(increment) {
     // set default value if needed
     if (typeof increment === 'undefined') {
       increment = 1
@@ -1065,7 +1007,7 @@ class RiotSlider {
   /*
    * load the next slide after a pause
    */
-  startInterval () {
+  startInterval() {
     // stop the current interval if it is on/active
     this.stopInterval()
 
@@ -1082,38 +1024,9 @@ class RiotSlider {
   }
 
   /*
-   * load jquery mobile from googleapis if needed
-   */
-  /*loadJqueryMoblieIfNeeded () {
-    if (!this.options.doSwipeOnTouchscreen) {
-      return false
-    }
-
-    if (!this.isTouchDevice) {
-      return false
-    }
-    // already included
-    if ($.mobile) {
-      return false
-    }
-
-	$.mobile.loadingMessage = false;
-
-    let rsThis = this
-
-    var url = $.getScript(RiotSlider.jqueryMobileUrl, function (
-      data,
-      textStatus,
-      jqxhr
-    ) {
-      rsThis.bindMobile()
-    })
-  }*/
-
-  /*
    * load material icons from googleapis if needed
    */
-  loadMaterialIconsIfNeeded () {
+  loadMaterialIconsIfNeeded() {
     if (!this.options.useMaterialIcons) {
       return false
     }
@@ -1158,7 +1071,7 @@ class RiotSlider {
   /*
    * changes the width of the slide when the browser/window is resized
    */
-  slideNumberClicked (buttonClicked) {
+  slideNumberClicked(buttonClicked) {
     this.stopInterval()
     this.currentSlideNumber = parseInt($(buttonClicked).html())
     this.goToSlide()
@@ -1168,7 +1081,7 @@ class RiotSlider {
    * the play button has been clicked. load the next slide and set the
    * following slide to load after a pause
    */
-  playClicked () {
+  playClicked() {
     this.incrementSlideNumber()
     this.goToSlide()
     this.startInterval()
@@ -1180,7 +1093,7 @@ class RiotSlider {
    * the stop button has been clicked. if the next image is set to load
    * after a pause, stop that action
    */
-  stopClicked () {
+  stopClicked() {
     if (!this.isIntervalSet) {
       return
     }
@@ -1192,7 +1105,7 @@ class RiotSlider {
   /*
    * the previous button was clicked. got to the next slide
    */
-  prevClicked () {
+  prevClicked() {
     if (this.elems.prev) {
       this.elems.prev.addClass('is-active')
       this.removeActiveClassIn1Sec(this.elems.prev)
@@ -1205,7 +1118,7 @@ class RiotSlider {
   /*
    * the previous button was clicked. got to the previous slide
    */
-  nextClicked () {
+  nextClicked() {
     if (this.elems.next) {
       this.elems.next.addClass('is-active')
       this.removeActiveClassIn1Sec(this.elems.next)
@@ -1240,7 +1153,7 @@ window.onload = function () {
   }
 }
 
-function riotSliderInitAll () {
+function riotSliderInitAll() {
   $(document).ready(function () {
     $('.riot-slider').each(function () {
       new RiotSlider($(this))
