@@ -33,6 +33,7 @@ class RiotSlider {
     }
     this.swipeInfo = {
       startX: null,
+      startY: null,
       startTime: null
     }
     this.currentSlideNumber = 1
@@ -40,7 +41,6 @@ class RiotSlider {
     this.slideInterval = null
     this.isIntervalSet = false
     this.isLoaded = false
-    //this.isMobileBinded = false
     this.sliderWidth = 0
     this.options = {
       doConsoleLog: false,
@@ -915,7 +915,7 @@ class RiotSlider {
 
   swipeInfoReset() {
     this.swipeInfo.startX = null;
-    this.swipeInfo.startY = null;
+    //this.swipeInfo.startY = null;
     this.swipeInfo.startTime = null;
   }
 
