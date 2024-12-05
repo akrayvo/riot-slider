@@ -477,7 +477,7 @@ class RiotSlider {
 
     attrName = 'data-swipe-max-seconds'
     if (typeof elem.attr(attrName) !== 'undefined') {
-      this.setswipeMaxSeconds(elem.attr(attrName))
+      this.setSwipeMaxSeconds(elem.attr(attrName))
     }
 
     attrName = 'data-swipe-min-px'
