@@ -51,7 +51,7 @@ class RiotSlider {
       previousNextDisplay: 'both',
       theme: 'default',
       slideHoldSeconds: 6,
-      swipeMaxTimeMs: 900,
+      swipeMaxSeconds: 0.9,
       swipeMinPx: 60,
       swipeMinPercent: 13
     }
@@ -66,6 +66,8 @@ class RiotSlider {
   /*
    * set doConsoleLog option
    * if set, information will be added to the console log
+   * generally only needed for testing/development
+   * default = false
    */
   setDoConsoleLog(value) {
     this.options.doConsoleLog = this.returnBoolean(value)
@@ -77,6 +79,7 @@ class RiotSlider {
    * set useMaterialIcons option
    * if set, material icons will display for play, stop, previous, and next buttons
    * if unavailable, they will automatically be added from fonts.googleapis.com
+   * default = true
    */
   setUseMaterialIcons(value) {
     this.options.useMaterialIcons = this.returnBoolean(value)
@@ -87,6 +90,7 @@ class RiotSlider {
   /*
    * set isAutoPlay option
    * if set, slider will automatically start playing when loaded
+   * default = true
    */
   setIsAutoPlay(value) {
     this.options.isAutoPlay = this.returnBoolean(value)
@@ -97,6 +101,7 @@ class RiotSlider {
   /*
    * set doShowButtons option
    * if set, slide buttons will display (numbers, play, pause, previous, next)
+   * default = true
    */
   setDoShowButtons(value) {
     this.options.doShowButtons = this.returnBoolean(value)
@@ -110,6 +115,7 @@ class RiotSlider {
    *  "never" = do not display number buttons
    *  "default" = hide number buttons if they need to wrap
    *  "always" = always display number buttons
+   * default = normal
    */
   setButtonNumberDisplay(value) {
     value = this.returnString(value, true);
@@ -134,7 +140,8 @@ class RiotSlider {
    *  "sides" = display prev/next links on the left and right of the slide
    *  "none" = display no prev/next links/buttons
    *  "both" = display prev/next in with the buttons and sides of each slide
-   */
+   * default = sides 
+  */
   setPreviousNextDisplay(value) {
     value = this.returnString(value, true);
     if (typeof value !== 'string') {
@@ -154,6 +161,8 @@ class RiotSlider {
   /*
    * set theme option
    * current themes are "default", "dark", "pastel"
+   * the theme/color sceme of the slider
+   * default = normal
    */
   setTheme(value) {
     value = this.returnString(value, true);
@@ -173,9 +182,10 @@ class RiotSlider {
    * set slideHoldSeconds option
    * the length of time each slide is displayed before moving to the next when playing
    * value must be between 1 second and 600 seconds (10 minutes)
+   * default = 6
    */
   setSlideHoldSeconds(value) {
-    value = this.returnInt(value, 1, 600)
+    value = this.returnFloat(value, 1, 600)
     if (typeof value !== 'number') {
       return
     }
@@ -184,27 +194,30 @@ class RiotSlider {
   }
 
   /*
-   * set swipeMaxTimeMs option
-   * the max time in milliseconds between the start and end swipe on a touchscreen
+   * set swipeMaxSeconds option
+   * the max time in seconds between the start and end swipe on a touchscreen
+   * can be a decimal (ex: 0.7 or 1.25)
    * if the time is too long, it is likely that the user isn't swiping or there was a missed event
-   * value must be between 1 MS and 5000MS (5 seconds)
+   * value must be between 0.1 (100 milliseconds) and 5
+   * default = 0.9 (900 milliseconds)
    */
-  setSwipeMaxTimeMs(value) {
-    value = this.returnInt(value, 1, 5000)
+  setSwipeMaxSeconds(value) {
+    value = this.returnFloat(value, 1, 5000)
     if (typeof value !== 'number') {
       return
     }
 
-    this.consoleLogInfo('set swipeMaxTimeMs: ' + value)
-    this.options.swipeMaxTimeMs = value
+    this.consoleLogInfo('set swipeMaxSeconds: ' + value)
+    this.options.swipeMaxSeconds = value
   }
 
   /*
    * set setSwipeMinPx option
    * the minimum number of pixels for a swipe on touchscreen
-   * used with swipeMinPercent. if swipeMinPx is not reached, 
-   * 	we can still swipe if swipeMinPercent is reached
-   * value must be between 1 and 3000 pixels
+   * used with data-swipe-min-percent. if data-swipe-min-px check fails, 
+   *  swipe will still work if the data-swipe-min-percent check succeeds
+   * value must be between 1 and 3000
+   * default = 60
    */
   setSwipeMinPx(value) {
     value = this.returnInt(value, 1, 3000)
@@ -218,12 +231,13 @@ class RiotSlider {
 
   /*
    * set swipeMinPercent option
-   * the minimum percent of pixels for a swipe on touchscreen
+   * the minimum percent of horizontal pixels for a swipe on touchscreen
    * the percentage of the swipe compared to the full slider width
    * makes it easier to recognize swipes on smaller screens
-   * used with swipeMinPercent. if swipeMinPx is reached, 
-   * 	swipeMinPercent is not checked
-   * value must be between 1 and 100 percent
+   * used with data-swipe-min-px. if data-swipe-min-px check is successful, 
+   * 	data-swipe-min-percent is not checked
+   * value must be between 1 and 100
+   * default = 13
    */
   setSwipeMinPercent(value) {
     value = this.returnInt(value, 1, 100)
@@ -286,6 +300,33 @@ class RiotSlider {
       value = parseInt(value);
     } else if (valueType === 'number') {
       value = Math.round(value);
+    } else {
+      // only a number or string can be passed
+      return null
+    }
+
+    if (value >= min && value <= max) {
+      return value
+    }
+
+    return null
+  }
+
+  /*
+   * convert a variable to an float (decimal)
+   * note: bigint type will return null since we don't need to handles number that large
+   * returns null on failure (not a number, invalid type, etc)
+   */
+  returnFloat(value, min, max) {
+    var valueType = typeof value;
+
+    if (valueType === 'string') {
+      if (isNaN(value)) {
+        return null
+      }
+      value = parseFloat(value);
+    } else if (valueType === 'number') {
+      // the value is already a number, do nothing
     } else {
       // only a number or string can be passed
       return null
@@ -434,9 +475,9 @@ class RiotSlider {
       this.setSlideHoldSeconds(elem.attr(attrName))
     }
 
-    attrName = 'data-swipe-max-time-ms'
+    attrName = 'data-swipe-max-seconds'
     if (typeof elem.attr(attrName) !== 'undefined') {
-      this.setSwipeMaxTimeMs(elem.attr(attrName))
+      this.setswipeMaxSeconds(elem.attr(attrName))
     }
 
     attrName = 'data-swipe-min-px'
@@ -456,7 +497,7 @@ class RiotSlider {
 
     const validData = ['data-do-console-log', 'data-use-material-icons', 'data-is-auto-play',
       'data-do-show-buttons', 'data-button-number-display', 'data-previous-next-display',
-      'data-theme', 'data-slide-hold-seconds', 'data-swipe-max-time-ms',
+      'data-theme', 'data-slide-hold-seconds', 'data-swipe-max-seconds',
       'data-swipe-min-px', 'data-swipe-min-percent']
 
     const attributes = elem[0].attributes;
@@ -864,11 +905,11 @@ class RiotSlider {
     const d = new Date();
     const timeDif = d.getTime() - this.swipeInfo.startTime;
 
-    if (timeDif > this.options.swipeMaxTimeMs) {
+    if (timeDif > this.options.swipeMaxSeconds * 1000) {
       this.swipeInfoReset();
       // too much time passed bewteen start and end. either event missed or very slow slide.
-      this.consoleLogInfo('slideSwipeEndEvent - slide time too long, stop swipe action, max MS = '
-        + this.options.swipeMaxTimeMs + ', MS taken = ' + timeDif);
+      this.consoleLogInfo('slideSwipeEndEvent - slide time too long, stop swipe action, max seconds = '
+        + this.options.swipeMaxSeconds + ', seconds taken = ' + (timeDif/1000));
       return;
     }
 

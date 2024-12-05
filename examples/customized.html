@@ -17,49 +17,67 @@
         available options - set as data attributes on the ul tag
           
         data-do-console-log = true/false
-        * if set, information will be added to the console log
-        * generally only needed for testing/development
-        * default = false
+          * if set, information will be added to the console log
+          * generally only needed for testing/development
+          * default = false
 
         data-use-material-icons = true/false
-        * if set, material icons will display for play, stop, previous, and next buttons
-        * if unavailable, they will automatically be added from fonts.googleapis.com
-        * default = false
+          * if set, material icons will display for play, stop, previous, and next buttons
+          * if unavailable, they will automatically be added from fonts.googleapis.com
+          * default = true
 
         data-is-auto-play = true/false
-        * if set, slider will automatically start playing when loaded
-        * default = true
+          * if set, slider will automatically start playing when loaded
+          * default = true
 
         data-do-show-buttons = true/false
-        * if set, slide buttons will display (numbers, play, pause, previous, next)
-        * default = true
-
-        data-do-swipe-on-touchscreen = true/false
-        * left and right swipe will be available via jquery mobile
-        * default = true
+          * if set, slide buttons will display (numbers, play, pause, previous, next)
+          * default = true
 
         data-button-number-display = default/never/always
-        * "never" = do not display number buttons
-        * "normal" = hide number buttons if they need to wrap
-        * "always" = always display number buttons
-        * default = normal
+          * "never" = do not display number buttons
+          * "normal" = hide number buttons if they need to wrap
+          * "always" = always display number buttons
+          * default = normal
 
         data-previous-next-display = buttons/sides/none/both
-        * "buttons" = display prev/next buttons near the slide numbers and play/pause buttons
-        * "sides" = display prev/next links on the left and right of the slide
-        * "none" = display no prev/next links/buttons
-        * "both" = display prev/next in with the buttons And sides of the slides
-        * default = sides
+          * "buttons" = display prev/next buttons near the slide numbers and play/pause buttons
+          * "sides" = display prev/next links on the left and right of the slide
+          * "none" = display no prev/next links/buttons
+          * "both" = display prev/next in with the buttons And sides of the slides
+          * default = sides
         
         data-theme = default/dark/pastel
-        * the theme/color sceme of the slider
-        * default = normal
+          * the theme/color sceme of the slider
+          * default = normal
 
         data-slide-hold-seconds = (number)
-        * the length of time each slide is displayed before moving to the next when playing
-         * default = 6
+          * the length of time each slide is displayed before moving to the next when playing
+          * can be a decimal (ex: 4.5)
+          * value must be between 1 second and 600 seconds (10 minutes)
+          * default = 6
 
-        -->
+        data-swipe-max-seconds = (number)
+          * the max time in seconds between the start and end swipe on a touchscreen
+          * can be a decimal (ex: 0.7 or 1.25)
+          * if the time is too long, it is likely that the user isn't swiping or there was a missed event
+          * value must be between 0.1 (100 milliseconds) and 5
+          * default = 0.9 (900 milliseconds)
+
+        data-swipe-min-px =  (number)
+          * the minimum number of pixels for a swipe on touchscreen
+          * used with data-swipe-min-percent. if data-swipe-min-px check fails, swipe will still work if the data-swipe-min-percent check succeeds
+          * value must be between 1 and 3000
+          * default = 60
+
+        data-swipe-min-percent =  (number)
+          * the minimum percent of horizontal pixels for a swipe on touchscreen
+          * the percentage of the swipe compared to the full slider width
+          * makes it easier to recognize swipes on smaller screens
+          * used with data-swipe-min-px. if data-swipe-min-px check is successful, data-swipe-min-percent is not checked
+          * value must be between 1 and 100
+          * default = 13
+      -->
 
       <ul
         class="riot-slider"
@@ -67,14 +85,15 @@
         data-use-material-icons="true"
         data-is-auto-play="true"
         data-do-show-buttons="true"
-        data-do-swipe-on-touchscreen="true"
         data-button-number-display="default"
         data-previous-next-display="both"
         data-theme="default"
-        data-slide-hold-seconds="2"
+        data-slide-hold-seconds="2.5"
+        data-swipe-max-seconds="0.8"
+        data-swipe-min-px="95"
+        data-swipe-min-percent="12"
       >
-        <!-- a caption will automatically be added if the "data-caption" attribute
-            is added to the li tag  -->
+        <!-- a caption will display if the "data-caption" attribute is on the li tag  -->
         <li data-caption="Blue Jay">
           <img src="./images/blue-jay.jpg" />
         </li>
