@@ -47,15 +47,13 @@ Add **riot-slider.min.css** and **riot-slider.min.js** files to your project.
 
 ## Optional css and js
 
-jQuery, jQuery mobile, and Material Icons will automatically be added if they are needed and not already available. If they are needed, it may be more efficient to include them before including `riot-slider.min.js`
-
+jQuery and Material Icons will automatically be added if they are needed and not already available. If they are needed, it may be more efficient to include them before including `riot-slider.min.js`.
 ```
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 ```
 
 ```
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://code.jquery.com/mobile/1.5.0-rc1/jquery.mobile-1.5.0-rc1.min.js"></script>
 ```
 
 ## Slider Customizations
@@ -80,7 +78,7 @@ The following code will display the slider with a dark background and each slide
 
 - if set, material icons will display for play, stop, previous, and next buttons
 - if unavailable, they will automatically be added from fonts.googleapis.com
-- default = false
+- default = true
 
 # data-is-auto-play = true/false
 
@@ -90,11 +88,6 @@ The following code will display the slider with a dark background and each slide
 # data-do-show-buttons = true/false
 
 - if set, slide buttons will display (numbers, play, pause, previous, next)
-- default = true
-
-# data-do-swipe-on-touchscreen = true/false
-
-- left and right swipe will be available via jquery mobile
 - default = true
 
 # data-button-number-display = default/never/always
@@ -120,15 +113,35 @@ The following code will display the slider with a dark background and each slide
 # data-slide-hold-seconds = (number)
 
 - the length of time each slide is displayed before moving to the next when playing
+- can be a decimal (ex: 4.5)
+- value must be between 1 second and 600 seconds (10 minutes)
 - default = 6
+
+# data-swipe-max-seconds = (number)
+   * the max time in seconds between the start and end swipe on a touchscreen
+   * can be a decimal (ex: 0.7 or 1.25)
+   * if the time is too long, it is likely that the user isn't swiping or there was a missed event
+   * value must be between 0.1 (100 milliseconds) and 5
+   * default = 0.9 (900 milliseconds)
+
+# data-swipe-min-px =  (number)
+   * the minimum number of pixels for a swipe on touchscreen
+   * used with data-swipe-min-percent. if data-swipe-min-px check fails, swipe will still work if the data-swipe-min-percent check succeeds
+   * value must be between 1 and 3000
+   * default = 60
+
+# data-swipe-min-percent =  (number)
+   * the minimum percent of horizontal pixels for a swipe on touchscreen
+   * the percentage of the swipe compared to the full slider width
+   * makes it easier to recognize swipes on smaller screens
+   * used with data-swipe-min-px. if data-swipe-min-px check is successful, data-swipe-min-percent is not checked
+   * value must be between 1 and 100
 
 ## Slide Captions
 
 Each slide is a list item (li). The data-caption attribute can be added to place a caption on the slide.
 
 # li example
-
-The following code will display the slider with a dark background and each slide will display for 3 seconds when the slider is playing.
 
 ```
 <li data-caption="Blue Jay"><img src="./images/blue-jay.jpg" /></li>
