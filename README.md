@@ -136,6 +136,7 @@ The following code will display the slider with a dark background and each slide
    * makes it easier to recognize swipes on smaller screens
    * used with data-swipe-min-px. if data-swipe-min-px check is successful, data-swipe-min-percent is not checked
    * value must be between 1 and 100
+   * default = 13
 
 ## Slide Captions
 
