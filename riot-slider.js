@@ -202,7 +202,7 @@ class RiotSlider {
    * default = 0.9 (900 milliseconds)
    */
   setSwipeMaxSeconds(value) {
-    value = this.returnFloat(value, 1, 5000)
+    value = this.returnFloat(value, 0.1, 5)
     if (typeof value !== 'number') {
       return
     }
@@ -477,7 +477,7 @@ class RiotSlider {
 
     attrName = 'data-swipe-max-seconds'
     if (typeof elem.attr(attrName) !== 'undefined') {
-      this.setswipeMaxSeconds(elem.attr(attrName))
+      this.setSwipeMaxSeconds(elem.attr(attrName))
     }
 
     attrName = 'data-swipe-min-px'
