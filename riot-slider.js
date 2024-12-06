@@ -364,7 +364,7 @@ class RiotSlider {
 
   /*
    * Load/initialize the slider
-   * sliderElem is the id of the HTML ul
+   * sliderElem is jQuery ul element
    */
   load(sliderElem) {
     // check if it was already loaded
