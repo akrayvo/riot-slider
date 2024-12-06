@@ -8,8 +8,6 @@ class RiotSlider {
   static validButtonNumberDisplays = ['never', 'default', 'always']
   static validPreviousNextDisplay = ['buttons', 'sides', 'none', 'both']
 
-  static isTouchDevice = null
-
   /*
    * initialize all class variables
    *     if the element ID is passed, the slider will be loaded.
@@ -377,8 +375,6 @@ class RiotSlider {
     if (typeof sliderElem !== 'object') {
       return false
     }
-
-    //this.isTouchDevice = this.getIsTouchDevice()
 
     // check that the element is an unordered list
     const tagName = sliderElem.prop('tagName').toLowerCase()
