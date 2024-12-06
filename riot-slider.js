@@ -289,25 +289,13 @@ class RiotSlider {
    * returns null on failure (not a number, invalid type, etc)
    */
   returnInt(value, min, max) {
-    var valueType = typeof value;
+    value = this.returnFloat(value, min, max);
 
-    if (valueType === 'string') {
-      if (isNaN(value)) {
-        return null
-      }
-      value = parseInt(value);
-    } else if (valueType === 'number') {
-      value = Math.round(value);
-    } else {
-      // only a number or string can be passed
+    if (typeof value !== 'number') {
       return null
     }
-
-    if (value >= min && value <= max) {
-      return value
-    }
-
-    return null
+    
+    return Math.round(value);
   }
 
   /*
@@ -316,7 +304,7 @@ class RiotSlider {
    * returns null on failure (not a number, invalid type, etc)
    */
   returnFloat(value, min, max) {
-    var valueType = typeof value;
+    const valueType = typeof value;
 
     if (valueType === 'string') {
       if (isNaN(value)) {
@@ -342,7 +330,7 @@ class RiotSlider {
    * if doStringCleanup is set, trim and set lower case
    */
   returnString(value, doCleanup) {
-    var valueType = typeof value;
+    const valueType = typeof value;
 
     if (valueType === 'string') {
       // already a string
@@ -497,7 +485,7 @@ class RiotSlider {
       'data-swipe-min-px', 'data-swipe-min-percent']
 
     const attributes = elem[0].attributes;
-    for (var attribute in attributes) {
+    for (const attribute in attributes) {
       if (Object.prototype.hasOwnProperty.call(attributes, attribute)) {
         // do stuff
         const attr = attributes[attribute].name.toLowerCase();
@@ -844,7 +832,7 @@ class RiotSlider {
     //this.bindMobile()
 
     // vanilla javascript bind on swipe events
-    for (var x = 0; x < this.elems.slides.length; x++) {
+    for (const x = 0; x < this.elems.slides.length; x++) {
       this.elems.slides[x].params = { rsThis: this };
       this.elems.slides[x].addEventListener("touchstart", function (event) {
         //this
@@ -866,9 +854,9 @@ class RiotSlider {
   */
   slideSwipeStartEvent(event) {
 
-    var temp = this.getSwipeXYFromEvent(event);
-    var x = temp[0];
-    //var y = temp[1];
+    const temp = this.getSwipeXYFromEvent(event);
+    const x = temp[0];
+    //const y = temp[1];
 
     if (!x) {
       this.swipeInfoReset();
@@ -876,7 +864,7 @@ class RiotSlider {
       return;
     }
 
-    var d = new Date();
+    const d = new Date();
 
     this.swipeInfo.startX = x;
     //this.swipeInfo.startY = y;
@@ -983,7 +971,7 @@ class RiotSlider {
    */
   goToSlide() {
     // change the left margin of the slider container so that that correct slide displays
-    var val = (this.currentSlideNumber - 1) * this.sliderWidth
+    const val = (this.currentSlideNumber - 1) * this.sliderWidth
     this.elems.slidesInner.css('margin-left', '-' + val + 'px')
 
     if (this.elems.slideLinkNumbers) {
