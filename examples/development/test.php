@@ -34,16 +34,19 @@ $images = array(
 <body>
     <div id="page-content">
         <h1>Riot Gallery Viewer - Test</h1>
-        <ul class="riot-gallery-viewer-gallery-default"><?php
+<?php /*
+        <h2>ul (unordered list)</h2>
+        <ul class="riot-gallery-viewer riot-gallery-viewer-gallery-default"><?php
             foreach ($images as $image) {
                 $caption = ucwords(str_replace('-', ' ', $image));
                 echo '<li><img src="../images/'.$image.'_thumb.jpg"><div class="riot-gallery-image-caption">'.htmlentities($caption).'</div></li>'."\n";
             }
         ?></ul>
 
-        <br><br>
+        <br><br><br>
 
-        <table class="riot-gallery-viewer-gallery-default"><?php
+        <h2>table</h2>
+        <table class="riot-gallery-viewer riot-gallery-viewer-gallery-default"><?php
             $columns = 4;
             $item = 0;
             foreach ($images as $image) {
@@ -64,7 +67,18 @@ $images = array(
                 }
                 echo '</tr>'."\n";
             }
-        ?></table>
+        ?></table> */ ?>
+
+        <br><br><br>
+
+        <h2>dl (definition list)</h2>
+        <dl class="riot-gallery-viewer riot-gallery-viewer-gallery-default"><?php
+            foreach ($images as $image) {
+                $caption = ucwords(str_replace('-', ' ', $image));
+                echo '<dt><a href="../images/'.$image.'_thumb.jpg" class="data-riot-gallery-image-url" target="_blank">'.$image.'</a></dt><dd class="riot-gallery-image-caption">Image of '.htmlentities($caption).'</dd>'."\n";
+            }
+        ?></ul>
+
     </div>
     <script src="../../riot-gallery-viewer.js?x=<?php echo time(); ?>"></script>
 </body>

@@ -110,6 +110,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
             const linkContainer = $(this.elems.linkContainers[x]);
             const imageUrl = this.getImageUrlFromContainerElement(linkContainer);
             console.log('imageUrl', imageUrl);
+            console.log('linkContainer', linkContainer);
             if (imageUrl !== null) {
                 // clickable element. will be set to the container if no valid inner element found
                 const clickElem = this.getClickElementFromContainerElement(linkContainer);
@@ -405,7 +406,8 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
                         } else if (tagName == 'table') {
                             selector = 'tr';
                         } else if (tagName == 'dl') {
-                            selector = 'dd';
+                            // works on dt (Description Term), not dd (Description Details)
+                            selector = 'dt';
                         }
                         elems = galleryElem.find(selector);
                     }
