@@ -1,0 +1,136 @@
+/********************************************************************************************
+ * styles for the viewer (main image, caption, previous/next buttons, background, close button, etc)
+ * also includes (optional) gallery styling
+ ********************************************************************************************/
+
+
+/*
+**********************************************************************
+* Gallery Styles - START
+* optional styles for the gallery, can be set using the riot-gallery-style class
+* this can be skipped and the user can set up they own styles 
+*/
+
+/* unordered list */
+
+ul.riot-gallery-viewer-gallery-default {
+    display: flex;
+    align-items: stretch;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #FFF;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+ul.riot-gallery-viewer-gallery-default li {
+    width: 220px;
+    min-height: 200px;
+    padding: 10px;
+    margin: 4px;
+    background-color: #DDD;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position: relative;
+    border: 1px solid #000;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+}
+
+ul.riot-gallery-viewer-gallery-default li img {
+    max-width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+
+ul.riot-gallery-viewer-gallery-default li figure {
+    margin: 0;
+    padding: 0;
+}
+
+ul.riot-gallery-viewer-gallery-default li .riot-gallery-image-caption,
+ul.riot-gallery-viewer-gallery-default li .image-caption,
+ul.riot-gallery-viewer-gallery-default li figcaption {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 4px 8px;
+    background-color: #FFF;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #000;
+    text-shadow: 1px 1px 3px #FFF;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* table */
+
+table.riot-gallery-viewer-gallery-default {
+    margin: 0;
+    background-color: #FFF;
+    width: auto;
+    box-sizing: border-box;
+    border-collapse: separate;
+    border-spacing: 8px;
+}
+
+table.riot-gallery-viewer-gallery-default td {
+    width: 220px;
+    min-height: 200px;
+    padding: 10px;
+    background-color: #DDD;
+    box-sizing: border-box;
+    /*align-items: center;
+    justify-content: center;
+    display: flex;*/
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    border: 1px solid #000;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+}
+
+table.riot-gallery-viewer-gallery-default td img {
+    max-width: 100%;
+    box-sizing: border-box;
+    display: block;
+    margin: 0 auto;
+}
+
+table.riot-gallery-viewer-gallery-default td figure {
+    margin: 0;
+    padding: 0;
+}
+
+table.riot-gallery-viewer-gallery-default td .riot-gallery-image-caption,
+table.riot-gallery-viewer-gallery-default td .image-caption,
+table.riot-gallery-viewer-gallery-default td figcaption {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 4px 8px;
+    background-color: #FFF;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #000;
+    text-shadow: 1px 1px 3px #FFF;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/*
+* Gallery Styles - END
+**********************************************************************
+**********************************************************************
+*/
