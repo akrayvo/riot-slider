@@ -6,16 +6,117 @@
 
 class RiotGalleryViewer {
 
+    /*****************************************************************************
+     ******************************************************************************
+     * Properties - START */
+
+    // added to initialized riot gallyery instances.
+    // ex: <ul class="riot-gallery-viewer" data-riot-gallery-viewer-instance-number="1">
     static galleryNumberAttribute = 'data-riot-gallery-viewer-instance-number';
 
+    // download jQuery from this location if not already available
     static jqueryUrl = 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js';
 
+    // is this instance of RiotGallery View loaded (items clickable)
     isLoaded = false;
-    doConsoleLog = true;
-    
-    elems = {};
 
+    // write information to the console log
+    doConsoleLog = true;
+
+    // jQuery elements
+    elems = {
+        // the main container that holds all gallery items
+        gallery: null,
+        // items in the gallery
+        // each contains a full size image, clickable element, and optional caption
+        galleryItems: null,
+    };
+
+    // array of images and optional captions
     galleryImages = [];
+
+    /* Properties - END
+    *****************************************************************************
+    *****************************************************************************/
+
+
+    /*****************************************************************************
+     ******************************************************************************
+     * Initialization - START */
+
+    /*
+    * load jquery (required) if not available, then automatically initialize riot gallery intance(s)
+    */
+    static autoInitialzie() {
+        console.log('static autoInitialzie() {');
+        if (!window.jQuery) {
+            let head = document.getElementsByTagName('head')[0];
+            let script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = RiotGalleryViewer.jqueryUrl;
+            head.appendChild(script);
+            let waitForJQuery = setInterval(function () {
+                if (window.jQuery) {
+                    clearInterval(waitForJQuery);
+                    RiotGalleryViewer.autoInitialzieInstances();
+                }
+            }, 100);
+        } else {
+            RiotGalleryViewer.autoInitialzieInstances();
+        }
+    }
+
+    /*
+     * automatically create gallery instances on elements
+     */
+    static autoInitialzieInstances() {
+        console.log('static autoInitialzieInstances() {');
+        $(document).ready(function () {
+            $('.riot-gallery-viewer').each(function () {
+                const galleryElem = $(this);
+                if (!galleryElem.attr(RiotGalleryViewer.galleryNumberAttribute)) {
+                    let selector = '.riot-gallery-viewer-item';
+                    let elems = galleryElem.find(selector);
+                    console.log('a', elems);
+                    if (elems.length < 1) {
+                        const tagName = galleryElem.prop('tagName').toLowerCase();
+                        if (tagName == 'ul' || tagName == 'ol') {
+                            selector = 'li';
+                        } else if (tagName == 'table') {
+                            selector = 'tr';
+                        } else if (tagName == 'dl') {
+                            // works on dt (Description Term), not dd (Description Details)
+                            selector = 'dt';
+                        }
+                        elems = galleryElem.find(selector);
+
+                        if (tagName == 'dl') {
+                            if (elems.length < 1) {
+                                // no dt (definition term) found in dl (definition list). try dd (definion details)
+                                // should not happen in correctly formatted html
+                                selector = 'dd';
+                                elems = galleryElem.find(selector);
+                            } else {
+                                console.log(elems);
+                                console.log(elems[0]);
+                                console.log($(elems[0]));
+                                let checkImageUrl = RiotGalleryViewer.getImageUrlFromContainerElement(elems);
+                                if (!checkImageUrl) {
+                                    // no image found in the first dt (definition term) of dl (definition list). try dd (definion details)
+                                    selector = 'dd';
+                                    elems = galleryElem.find(selector);
+                                }
+                            }
+                        }
+                    }
+                    if (elems.length > 0) {
+                        new RiotGalleryViewer(galleryElem, selector);
+                    }
+                }
+            });
+            console.log(riotGalleryViewerInstances);
+        })
+    }
 
     /*
      * constructor for the class
@@ -32,7 +133,7 @@ class RiotGalleryViewer {
     load(galleryElem, innerSelector) {
         console.log('load(galleryElem)', galleryElem, innerSelector);
 
-console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.galleryNumberAttribute);
+        console.log('RiotGalleryViewer.galleryNumberAttribute', RiotGalleryViewer.galleryNumberAttribute);
         // check if it was already loaded
         if (galleryElem.attr(RiotGalleryViewer.galleryNumberAttribute)) {
             this.consoleLogInfo('gallery already added to element. skip.');
@@ -85,9 +186,9 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
 
         this.elems.gallery = galleryElem;
 
-        this.elems.linkContainers = this.elems.gallery.find(innerSelector);
+        this.elems.galleryItems = this.elems.gallery.find(innerSelector);
 
-        if (this.elems.linkContainers.length < 1) {
+        if (this.elems.galleryItems.length < 1) {
             this.consoleLogInfo('Riot Gallery Viewer not loaded. No gallery items found.');
             return false;
         }
@@ -105,9 +206,9 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
      */
     bindGalleryLinks() {
         console.log('bindGalleryLinks()');
-        console.log('this.elems.linkContainers.length', this.elems.linkContainers.length);
-        for (let x = 0; x < this.elems.linkContainers.length; x++) {
-            const linkContainer = $(this.elems.linkContainers[x]);
+        console.log('this.elems.galleryItems.length', this.elems.galleryItems.length);
+        for (let x = 0; x < this.elems.galleryItems.length; x++) {
+            const linkContainer = $(this.elems.galleryItems[x]);
             const imageUrl = RiotGalleryViewer.getImageUrlFromContainerElement(linkContainer);
             console.log('imageUrl', imageUrl);
             console.log('linkContainer', linkContainer);
@@ -387,84 +488,23 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         return '';
     }
 
-    /*
-     * automatically create gallery instances on elements
-     */
-    static autoInitialzieInstances() {
-        console.log('static autoInitialzieInstances() {');
-        $(document).ready(function () {
-            $('.riot-gallery-viewer').each(function () {
-                const galleryElem = $(this);
-                if (!galleryElem.attr(RiotGalleryViewer.galleryNumberAttribute)) {
-                    let selector = '.riot-gallery-viewer-item';
-                    let elems = galleryElem.find(selector);
-                    console.log('a', elems);
-                    if (elems.length < 1) {
-                        const tagName = galleryElem.prop('tagName').toLowerCase();
-                        if (tagName == 'ul' || tagName == 'ol') {
-                            selector = 'li';
-                        } else if (tagName == 'table') {
-                            selector = 'tr';
-                        } else if (tagName == 'dl') {
-                            // works on dt (Description Term), not dd (Description Details)
-                            selector = 'dt';
-                        }
-                        elems = galleryElem.find(selector);
-
-                        if (tagName == 'dl') {
-                            if (elems.length < 1) {
-                                // no dt (definition term) found in dl (definition list). try dd (definion details)
-                                // should not happen in correctly formatted html
-                                selector = 'dd';
-                                elems = galleryElem.find(selector);
-                            } else {
-                                console.log(elems);
-                                console.log(elems[0]);
-                                console.log($(elems[0]));
-                                let checkImageUrl = RiotGalleryViewer.getImageUrlFromContainerElement(elems);
-                                if (!checkImageUrl) {
-                                    // no image found in the first dt (definition term) of dl (definition list). try dd (definion details)
-                                    selector = 'dd';
-                                    elems = galleryElem.find(selector);
-                                }
-                            }
-                        } 
-                    }
-                    if (elems.length > 0) {
-                        new RiotGalleryViewer(galleryElem, selector);
-                    }
-                }
-            });
-            console.log(riotGalleryViewerInstances);
-        })
-    }
-
-    /*
-     * load jquery (required) if not available, then automatically initialize riot gallery intance(s) if not manually initialized
-     */
-    static autoInitialzie() {
-        console.log('static autoInitialzie() {');
-        if (!window.jQuery) {
-            let head = document.getElementsByTagName('head')[0];
-            let script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = RiotGalleryViewer.jqueryUrl;
-            head.appendChild(script);
-            let waitForJQuery = setInterval(function () {
-                if (window.jQuery) {
-                    clearInterval(waitForJQuery);
-                    RiotGalleryViewer.autoInitialzieInstances();
-                }
-            }, 100);
-        } else {
-            RiotGalleryViewer.autoInitialzieInstances();
-        }
-    }
+    /* Initialization - END
+    *****************************************************************************
+    *****************************************************************************/
 
 
     /*****************************************************************************
      ******************************************************************************
      * Helper Functions - START */
+
+    /*
+     * write information to the console if doConsoleLog is true
+     */
+    consoleLogInfo(info) {
+        if (this.options.doConsoleLog) {
+            console.log(info);
+        }
+    }
 
     /*
      * return the text or attribute from a jquery element
@@ -521,15 +561,6 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
             return returnOnError;
         }
         return RiotGalleryViewer.getJqueryElemVal(elem, dataName);
-    }
-
-    /*
-     * write information to the console if doConsoleLog is true
-     */
-    consoleLogInfo(info) {
-        if (this.options.doConsoleLog) {
-            console.log(info);
-        }
     }
 
     /* Helper Functions - END
