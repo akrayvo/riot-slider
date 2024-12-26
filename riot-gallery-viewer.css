@@ -29,10 +29,10 @@ ul.riot-gallery-viewer-gallery-default {
 ul.riot-gallery-viewer-gallery-default li {
     width: 220px;
     min-height: 200px;
+    box-sizing: border-box;
     padding: 10px;
     margin: 4px;
     background-color: #DDD;
-    box-sizing: border-box;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -85,12 +85,9 @@ table.riot-gallery-viewer-gallery-default {
 table.riot-gallery-viewer-gallery-default td {
     width: 220px;
     min-height: 200px;
+    box-sizing: border-box;
     padding: 10px;
     background-color: #DDD;
-    box-sizing: border-box;
-    /*align-items: center;
-    justify-content: center;
-    display: flex;*/
     text-align: center;
     vertical-align: middle;
     position: relative;
@@ -127,6 +124,48 @@ table.riot-gallery-viewer-gallery-default td figcaption {
     width: 100%;
     box-sizing: border-box;
     text-align: center;
+}
+
+/* definition list */
+
+dl.riot-gallery-viewer-gallery-default {
+    display: flex;
+    flex-flow: row wrap;
+    background-color: #FFF;
+    
+}
+
+dl.riot-gallery-viewer-gallery-default dt,
+dl.riot-gallery-viewer-gallery-default dd {
+    width:100%;
+    background-color: #DDD;
+    color: #000;
+    text-align:left;
+    box-sizing: border-box;
+}
+
+dl.riot-gallery-viewer-gallery-default dt {
+    border-top: 1px solid #000;
+    border-right: 1px solid #000;
+    border-left: 1px solid #000;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin: 4px 0 0 0;
+    padding: 10px 14px 2px 14px;
+    font-weight:bold;
+    font-size:16px;
+    
+}
+
+dl.riot-gallery-viewer-gallery-default dd {
+    border-bottom: 1px solid #000;
+    border-right: 1px solid #000;
+    border-left: 1px solid #000;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    margin: 0 0 4px 0;
+    padding: 2px 14px 10px 14px;
+    font-size:14px;
 }
 
 /*
