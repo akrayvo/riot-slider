@@ -108,14 +108,14 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         console.log('this.elems.linkContainers.length', this.elems.linkContainers.length);
         for (let x = 0; x < this.elems.linkContainers.length; x++) {
             const linkContainer = $(this.elems.linkContainers[x]);
-            const imageUrl = this.getImageUrlFromContainerElement(linkContainer);
+            const imageUrl = RiotGalleryViewer.getImageUrlFromContainerElement(linkContainer);
             console.log('imageUrl', imageUrl);
             console.log('linkContainer', linkContainer);
             if (imageUrl !== null) {
                 // clickable element. will be set to the container if no valid inner element found
-                const clickElem = this.getClickElementFromContainerElement(linkContainer);
+                const clickElem = RiotGalleryViewer.getClickElementFromContainerElement(linkContainer);
                 // the image caption to display in the fallery viewer, will return empty ("") if not found
-                const caption = this.getCaptionFromContainerElement(linkContainer);
+                const caption = RiotGalleryViewer.getCaptionFromContainerElement(linkContainer);
                 console.log(linkContainer, clickElem, imageUrl, caption);
 
                 // add url and caption to galleryImages array
@@ -140,14 +140,14 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
      * uses several methods to find the image url
      * also returns the clickable element if found
      */
-    getImageUrlFromContainerElement(linkContainer) {
+    static getImageUrlFromContainerElement(linkContainer) {
 
         let url;
         let elem;
 
         // data-riot-gallery-image-url set on li container
         // <li data-riot-gallery-image-url="./image.jpg"><img src="./thumb.jpg"></li>
-        url = this.getJqueryElemVal(linkContainer, 'data-riot-gallery-image-url');
+        url = RiotGalleryViewer.getJqueryElemVal(linkContainer, 'data-riot-gallery-image-url');
         if (url) {
             return url;
         }
@@ -155,21 +155,21 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         // data-riot-gallery-image-url set on any element in container
         // <li><a href="./image.jpg" data-riot-gallery-image-url="./image.jpg"><img src="./thumb.jpg"></a></li>
         // <li><img src="./thumb.jpg" data-riot-gallery-image-url="./image.jpg"></li>
-        url = this.getJqueryElemChildData(linkContainer, 'data-riot-gallery-image-url');
+        url = RiotGalleryViewer.getJqueryElemChildData(linkContainer, 'data-riot-gallery-image-url');
         if (url) {
             return url;
         }
 
         // data-image-url set on li container
         // <li data-image-url="./image.jpg"><img src="./thumb.jpg"></li>
-        url = this.getJqueryElemVal(linkContainer, 'data-image-url');
+        url = RiotGalleryViewer.getJqueryElemVal(linkContainer, 'data-image-url');
         if (url) {
             return url;
         }
 
         // data-image-url set on any element in container
         // <li><a href="./image.jpg" data-image-url="./image.jpg"><img src="./thumb.jpg"></a></li>
-        url = this.getJqueryElemChildData(linkContainer, 'data-image-url');
+        url = RiotGalleryViewer.getJqueryElemChildData(linkContainer, 'data-image-url');
         if (url) {
             return url;
         }
@@ -177,7 +177,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         // href from a tag (link) with a class of "riot-gallery-image-link"
         // <li><a href="./image.jpg" class="riot-gallery-image-link"><img src="./thumb.jpg"></a></li>
         elem = linkContainer.find('a.riot-gallery-image-link');
-        url = this.getJqueryElemVal(elem, 'href');
+        url = RiotGalleryViewer.getJqueryElemVal(elem, 'href');
         if (url) {
             return url;
         }
@@ -185,7 +185,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         // src from img tag with "riot-gallery-image-thumb" class
         // <li><img src="./image.jpg" class="riot-gallery-image-thumb"></li>
         elem = linkContainer.find('img.riot-gallery-image-thumb');
-        url = this.getJqueryElemVal(elem, 'src');
+        url = RiotGalleryViewer.getJqueryElemVal(elem, 'src');
         if (url) {
             return url;
         }
@@ -193,7 +193,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         // href from a tag (link) with a class of "image-link"
         // <li><a href="./image.jpg" class="image-link"><img src="./thumb.jpg"></a></li>
         elem = linkContainer.find('a.image-link');
-        url = this.getJqueryElemVal(elem, 'href');
+        url = RiotGalleryViewer.getJqueryElemVal(elem, 'href');
         if (url) {
             return url;
         }
@@ -201,7 +201,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         // src from img tag with "image-thumb" class
         // <li><img src="./thumb.jpg" class="image-thumb"></li>
         elem = linkContainer.find('img.image-thumb');
-        url = this.getJqueryElemVal(elem, 'src');
+        url = RiotGalleryViewer.getJqueryElemVal(elem, 'src');
         if (url) {
             return url;
         }
@@ -209,7 +209,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         // href from a tag (link)
         // <li><a href="./image.jpg"><img src="./thumb.jpg"></a></li>
         elem = linkContainer.find('a');
-        url = this.getJqueryElemVal(elem, 'href');
+        url = RiotGalleryViewer.getJqueryElemVal(elem, 'href');
         if (url) {
             return url;
         }
@@ -217,7 +217,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         // src from img tag
         // <li><img src="./image.jpg"></li>
         elem = linkContainer.find('img');
-        url = this.getJqueryElemVal(elem, 'src');
+        url = RiotGalleryViewer.getJqueryElemVal(elem, 'src');
         if (url) {
             return url;
         }
@@ -225,7 +225,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         return null;
     }
 
-    getClickElementFromContainerElement(linkContainer) {
+    static getClickElementFromContainerElement(linkContainer) {
         console.log('getClickElementFromContainerElement(linkContainer) {');
         // a tag (link) with a class of "riot-gallery-image-link"
         // <li><a href="./image.jpg" class="riot-gallery-image-link"><img src="./thumb.jpg"></a></li>
@@ -287,53 +287,53 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         return linkContainer;
     }
 
-    getCaptionFromContainerElement(linkContainer) {
+    static getCaptionFromContainerElement(linkContainer) {
 
         // data-riot-gallery-image-caption on the container
         // <li data-riot-gallery-image-caption="My Pic"><img src="./image.jpg"></li>
-        let caption = this.getJqueryElemVal(linkContainer, 'data-riot-gallery-image-caption');
+        let caption = RiotGalleryViewer.getJqueryElemVal(linkContainer, 'data-riot-gallery-image-caption');
         if (caption) {
             return caption;
         }
 
         // data-riot-gallery-image-caption on any inner element
         // <li><img src="./image.jpg" data-riot-gallery-image-caption="My Pic"></li>
-        caption = this.getJqueryElemChildData(linkContainer, 'data-riot-gallery-image-caption');
+        caption = RiotGalleryViewer.getJqueryElemChildData(linkContainer, 'data-riot-gallery-image-caption');
         if (caption) {
             return caption;
         }
 
         // data-image-caption on the container
         // <li data-image-caption="My Pic"><img src="./image.jpg"></li>
-        caption = this.getJqueryElemVal(linkContainer, 'data-image-caption');
+        caption = RiotGalleryViewer.getJqueryElemVal(linkContainer, 'data-image-caption');
         if (caption) {
             return caption;
         }
 
         // data-image-caption on any inner element
         // <li><img src="./image.jpg" data-image-caption="My Pic"></li>
-        caption = this.getJqueryElemChildData(linkContainer, 'data-image-caption');
+        caption = RiotGalleryViewer.getJqueryElemChildData(linkContainer, 'data-image-caption');
         if (caption) {
             return caption;
         }
 
         // riot-gallery-image-caption class on any text container
         // <li><img src="./image.jpg"><div class="riot-gallery-image-caption">My Pic</div></li>
-        caption = this.getJqueryElemVal(linkContainer.find('.riot-gallery-image-caption'), 'text');
+        caption = RiotGalleryViewer.getJqueryElemVal(linkContainer.find('.riot-gallery-image-caption'), 'text');
         if (caption) {
             return caption;
         }
 
         // image-caption class on any text container
         // <li><img src="./image.jpg"><div class="image-caption">My Pic</div></li>
-        caption = this.getJqueryElemVal(linkContainer.find('.image-caption'), 'text');
+        caption = RiotGalleryViewer.getJqueryElemVal(linkContainer.find('.image-caption'), 'text');
         if (caption) {
             return caption;
         }
 
         // image-caption class on any text container
         // <li><figure><img src="./image.jpg"><figcaption>My Pic</figcaption></figure></li>
-        caption = this.getJqueryElemVal(linkContainer.find('figcaption'), 'text');
+        caption = RiotGalleryViewer.getJqueryElemVal(linkContainer.find('figcaption'), 'text');
         if (caption) {
             return caption;
         }
@@ -343,11 +343,11 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         let imgElems = linkContainer.find('img.riot-gallery-image-thumb');
         for (const x = 0; x < imgElems.length; x++) {
             const imgElem = $(imgElems[x]);
-            caption = this.getJqueryElemVal(imgElem, 'alt');
+            caption = RiotGalleryViewer.getJqueryElemVal(imgElem, 'alt');
             if (caption) {
                 return caption;
             }
-            caption = this.getJqueryElemVal(imgElem, 'title');
+            caption = RiotGalleryViewer.getJqueryElemVal(imgElem, 'title');
             if (caption) {
                 return caption;
             }
@@ -358,11 +358,11 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         imgElems = linkContainer.find('img.image-thumb');
         for (const x = 0; x < imgElems.length; x++) {
             const imgElem = $(imgElems[x]);
-            caption = this.getJqueryElemVal(imgElem, 'alt');
+            caption = RiotGalleryViewer.getJqueryElemVal(imgElem, 'alt');
             if (caption) {
                 return caption;
             }
-            caption = this.getJqueryElemVal(imgElem, 'title');
+            caption = RiotGalleryViewer.getJqueryElemVal(imgElem, 'title');
             if (caption) {
                 return caption;
             }
@@ -373,7 +373,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
         imgElems = linkContainer.find('img');
         for (let x = 0; x < imgElems.length; x++) {
             const imgElem = $(imgElems[x]);
-            caption = this.getJqueryElemVal(imgElem, 'alt');
+            caption = RiotGalleryViewer.getJqueryElemVal(imgElem, 'alt');
             if (caption) {
                 return caption;
             }
@@ -410,6 +410,25 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
                             selector = 'dt';
                         }
                         elems = galleryElem.find(selector);
+
+                        if (tagName == 'dl') {
+                            if (elems.length < 1) {
+                                // no dt (definition term) found in dl (definition list). try dd (definion details)
+                                // should not happen in correctly formatted html
+                                selector = 'dd';
+                                elems = galleryElem.find(selector);
+                            } else {
+                                console.log(elems);
+                                console.log(elems[0]);
+                                console.log($(elems[0]));
+                                let checkImageUrl = RiotGalleryViewer.getImageUrlFromContainerElement(elems);
+                                if (!checkImageUrl) {
+                                    // no image found in the first dt (definition term) of dl (definition list). try dd (definion details)
+                                    selector = 'dd';
+                                    elems = galleryElem.find(selector);
+                                }
+                            }
+                        } 
                     }
                     if (elems.length > 0) {
                         new RiotGalleryViewer(galleryElem, selector);
@@ -450,7 +469,7 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
     /*
      * return the text or attribute from a jquery element
      */
-    getJqueryElemVal(elems, attr) {
+    static getJqueryElemVal(elems, attr) {
 
         const returnOnError = null;
 
@@ -491,15 +510,17 @@ console.log('RiotGalleryViewer.galleryNumberAttribute',RiotGalleryViewer.gallery
     /*
      * return the data value if it exits in any child element
      */
-    getJqueryElemChildData(parentElem, dataName) {
+    static getJqueryElemChildData(parentElem, dataName) {
+        const returnOnError = null;
+
         const elem = parentElem.find('[' + dataName + ']');
         if (!elem) {
             return returnOnError;
         }
         if (elem.length) {
-            return null;
+            return returnOnError;
         }
-        return this.getJqueryElemVal(elem, dataName);
+        return RiotGalleryViewer.getJqueryElemVal(elem, dataName);
     }
 
     /*

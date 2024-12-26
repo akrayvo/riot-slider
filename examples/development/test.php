@@ -34,7 +34,7 @@ $images = array(
 <body>
     <div id="page-content">
         <h1>Riot Gallery Viewer - Test</h1>
-<?php /*
+
         <h2>ul (unordered list)</h2>
         <ul class="riot-gallery-viewer riot-gallery-viewer-gallery-default"><?php
             foreach ($images as $image) {
@@ -67,7 +67,7 @@ $images = array(
                 }
                 echo '</tr>'."\n";
             }
-        ?></table> */ ?>
+        ?></table>
 
         <br><br><br>
 
