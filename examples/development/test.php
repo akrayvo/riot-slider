@@ -80,6 +80,7 @@ $images = array(
         ?></ul>
 
     </div>
+    <?php /*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> */ ?>
     <script src="../../riot-gallery-viewer.js?x=<?php echo time(); ?>"></script>
 </body>
 
